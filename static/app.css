@@ -1,0 +1,25 @@
+/* body {
+  background-color: aqua;
+} */
+
+.wrapper {
+  min-height: 100vh;
+  margin-bottom: -50px;
+}
+
+#footer {
+  height: 50px;
+}
+
+li.nav-item {
+  margin: 0 5px;
+  padding: 0 5px;
+}
+
+.error {
+  color: tomato;
+}
+
+.success {
+  color: green;
+}

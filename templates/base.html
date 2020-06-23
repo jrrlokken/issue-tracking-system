@@ -5,33 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link
       rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
-      crossorigin="anonymous"
+      href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.0/yeti/bootstrap.min.css"
     />
     <link rel="stylesheet" href="/static/app.css" />
     <title>Issue Tracking System</title>
   </head>
   <body>
-    <div class="container">
-      <nav class="navbar navbar-dark justify-content-space-between">
-        <a href="/">ITS</a>
-        <ul></ul>
-      </nav>
+    <div class="wrapper">
+      <div class="container">
+        <nav class="navbar navbar-dark bg-dark d-flex justify-content-between">
+          <a class="navbar-brand" href="/">ITS</a>
+          <ul class="navbar-nav flex-row">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Register</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+
+      <section id="header">
+        <div class="container">
+          {% with messages = get_flashed_messages(with_categories=true) %} {% if
+          messages %}
+          <section class="messages">
+            {% for category,msg in messages %}
+            <p class="{{category}}">{{msg}}</p>
+            {% endfor %}
+          </section>
+          {% endif %} {% endwith %} {% block header %} {% endblock %}
+        </div>
+      </section>
+
+      <section id="main">
+        <div class="container">
+          {% block main %} {% endblock %}
+        </div>
+      </section>
     </div>
-
-    <section id="header">
-      <div class="container">
-        {% block header %} {% endblock %}
-      </div>
-    </section>
-
-    <section id="main">
-      <div class="container">
-        {% block main %} {% endblock %}
-      </div>
-    </section>
-
     <section id="footer" class="text-center">
       <div class="container">
         <p>© 2020 Joshua Lokken</p>

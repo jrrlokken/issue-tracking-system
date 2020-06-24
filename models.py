@@ -45,3 +45,22 @@ class User(db.Model):
                 return user
 
         return False
+
+
+class Issue(db.Model):
+    """Issue model."""
+    __tablename__ = "issues"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    title = db.Column(db.Text, nullable=False)
+    summary = db.Column(db.Text)
+    text = db.Column(db.Text, nullable=False)
+    category_id = db.Column(db.Integer, nullable=False, default=1)
+    reporter = db.Column(db.Integer, nullable=False)
+    assignee = db.Column(db.Integer, nullable=False)
+    priority = db.Column(db.String(20), nullable=False, default=1)
+    status_code = db.Column(db.Integer, nullable=False, default=1)
+    resolution = db.Column(db.Text)
+    resolution_date = db.Column(db.DateTime)
+    created_at = db.Column(db.DateTime)
+    updated_at = db.Column(db.DateTime)

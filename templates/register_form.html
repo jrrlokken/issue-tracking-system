@@ -1,12 +1,18 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %}
 
-<h1 class="display-4">Register</h1>
-<p class="lead">Register for our site.</p>
+{% block main %}
+  <h1 class="display-4">Register</h1>
+  <p class="lead">Register for our site.</p>
 
-<form action="{{ url_for('register') }}" method="POST" class="form-group">
-  <input type="text" name="username" placeholder="username" />
-  <input type="password" name="password" placeholder="password" />
-  <button class="btn btn-sm btn-primary" type="submit">Register</button>
-</form>
-
+  <form action="/register" method="POST" class="form-group">
+    <input type="text" name="email" placeholder="email" />
+    <input
+      type="text"
+      name="password"
+      type="password"
+      name="password"
+      placeholder="password"
+    />
+    <button class="btn btn-sm btn-primary" type="submit">Register</button>
+  </form>
 {% endblock %}

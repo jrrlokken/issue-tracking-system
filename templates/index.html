@@ -1,15 +1,13 @@
-{% extends 'base.html' %} {% block header %}
-<div class="jumbotron jumbotron-fluid py-5">
-  <div class="container">
-    <h1 class="display-4">Welcome to ITS</h1>
-    <p class="lead">An issue tracking system</p>
+{% extends 'base.html' %}
+{% block header %}
+  <div class="jumbotron jumbotron-fluid py-5">
+    <div class="container">
+      <h1 class="display-4">Welcome to ITS</h1>
+      <p class="lead">An issue tracking system</p>
+    </div>
   </div>
-</div>
-{% endblock %} {% block main %}
-<ul>
-  {% for user in users %}
-  <li>{{ user.first_name }} {{user.last_name }}</li>
-  {% endfor %}
-</ul>
+{% endblock %}
 
+{% block main %}
+  {% include 'issue_list.html' %}
 {% endblock %}

@@ -49,6 +49,7 @@ class User(db.Model):
 
 class Issue(db.Model):
     """Issue model."""
+
     __tablename__ = "issues"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -56,11 +57,21 @@ class Issue(db.Model):
     summary = db.Column(db.Text)
     text = db.Column(db.Text, nullable=False)
     category_id = db.Column(db.Integer, nullable=False, default=1)
-    reporter = db.Column(db.Integer, nullable=False)
-    assignee = db.Column(db.Integer, nullable=False)
-    priority = db.Column(db.String(20), nullable=False, default=1)
+    reporter = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    assignee = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    priority = db.Column(db.Integer, nullable=False, default=1)
     status_code = db.Column(db.Integer, nullable=False, default=1)
-    resolution = db.Column(db.Text)
+    resolution = db.Column(db.Integer, nullable=False, default=1)
     resolution_date = db.Column(db.DateTime)
     created_at = db.Column(db.DateTime)
     updated_at = db.Column(db.DateTime)
+
+
+class Role(db.Model):
+    """Role model."""
+
+    __tablename__ = "roles"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    role_name = db.Column(db.String)

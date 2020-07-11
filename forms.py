@@ -14,6 +14,13 @@ class AddUserForm(FlaskForm):
     password = StringField("Password", validators=[InputRequired()])
 
 
+class LoginForm(FlaskForm):
+    """Login form."""
+
+    email = StringField("Email", validators=[InputRequired()])
+    password = StringField("Password", validators=[InputRequired()])
+
+
 class EditUserForm(FlaskForm):
     """Form to edit user details."""
 

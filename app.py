@@ -8,7 +8,7 @@ from flask_login import LoginManager, UserMixin
 from flask_login import login_user, logout_user, current_user, login_required
 from flask_debugtoolbar import DebugToolbarExtension
 from forms import *
-from models import db, connect_db, User
+from models import db, connect_db, User, Issue, Role
 
 app = Flask(__name__)
 
@@ -16,11 +16,11 @@ app.config.from_envvar('ITS_APP_SETTINGS')
 
 debug = DebugToolbarExtension(app)
 connect_db(app)
-
+db.create_all()
 
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = "users.login"
+login_manager.login_view = "login"
 
 
 @login_manager.user_loader
@@ -30,8 +30,9 @@ def load_user(user_id):
 
 @app.route("/")
 def show_index():
-    users = User.query.all()
-    return render_template('index.html', users=users)
+    """Index view."""
+
+    return render_template('base/index.html')
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -42,9 +43,26 @@ def show_register_form():
         email = form.email.data
         password = form.password.data
 
-    return render_template('register_form.html')
+        return redirect("/")
+
+    return render_template('users/register.html', form=form)
 
 
 @app.route("/login", methods=["GET", "POST"])
-def show_login_form():
-    return render_template('login.html')
+def login_form():
+    """Provide login form and handle submission."""
+
+    form = LoginForm()
+
+    return render_template('users/login.html', form=form)
+
+
+@app.route("/logout")
+def logout():
+    """Logout route."""
+
+    if current_user:
+        logout_user()
+        flash("Logged out")
+
+    return redirect("/login")

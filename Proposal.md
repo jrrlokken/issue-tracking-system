@@ -11,7 +11,7 @@ The application backend will provide a RESTful JSON API to serve issue and user 
 
 There is no sensitive data involved, however, proper authentication and authorization will be implemented, allowing users to edit/delete only issues they have created.
 
-I plan to use the Twilio API for sending notification email.
+I _may_ use the Twilio API for sending notification email.
 
 ---
 
@@ -37,7 +37,7 @@ https://dbdiagram.io/d/5ee914719ea313663b3aa4e9
 - User registration, login, logout, edit or delete account.
 - Create issue, default status “Submitted”, default priority “Medium”
 - Read issue, user can views issues on login, sortable by display column
-- Update issue, the original body of the issue will be editable, however, new information will be added to issues via comments. Users will be able to change ticket status to “Resolved”
+- Update issue, the original body of the issue will be editable, however, new information will be added to issues via comments. Users will be able to change ticket status to “Closed”, in order to facilitate some level of user control over their own tickets.
 - Delete issue
 
 User roles:

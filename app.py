@@ -66,3 +66,15 @@ def logout():
         flash("Logged out")
 
     return redirect("/login")
+
+
+# Issue routes
+
+@app.route("/issues/new", methods=["GET", "POST"])
+def add_issue():
+    """New issue form and handler."""
+
+    form = AddIssueForm()
+
+    if request.method == 'GET':
+        return render_template('issues/issue_form.html', form=form)

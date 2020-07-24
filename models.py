@@ -46,6 +46,9 @@ class User(db.Model):
 
         return False
 
+    def __repr__(self):
+        return '<{}-"{} {}"-{}>'.format(self.id, self.first_name, self.last_name, self.role)
+
 
 class Issue(db.Model):
     """Issue model."""

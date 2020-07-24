@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.sql import func
 from flask_bcrypt import Bcrypt
 
 db = SQLAlchemy()
@@ -25,12 +26,20 @@ class User(db.Model):
     role = db.Column(db.Text, nullable=False, default='user')
 
     @classmethod
-    def register(cls, email, password):
+    def register(cls, email, first_name, last_name, password):
         """Register a user, hashing their password."""
 
         hashed = bcrypt.generate_password_hash(password)
         hashed_utf8 = hashed.decode("utf8")
-        return cls(email=email, password=hashed_utf8)
+        user = cls(
+            email=email,
+            first_name=first_name,
+            last_name=last_name,
+            password=password
+        )
+
+        db.session.add(user)
+        return user
 
     @classmethod
     def authenticate(cls, email, password):
@@ -47,7 +56,7 @@ class User(db.Model):
         return False
 
     def __repr__(self):
-        return '<{}-"{} {}"-{}>'.format(self.id, self.first_name, self.last_name, self.role)
+        return '<{} "{} {}" {}>'.format(self.id, self.first_name, self.last_name, self.role)
 
 
 class Issue(db.Model):
@@ -68,7 +77,7 @@ class Issue(db.Model):
     status_code = db.Column(db.Integer, nullable=False, default=1)
     resolution = db.Column(db.Integer, nullable=False, default=1)
     # resolution_date = db.Column(db.DateTime)
-    created_at = db.Column(db.DateTime(timezone=True),
+    created_at = db.Column(db.DateTime(timezone=True), nullable=False,
                            server_default=func.now())
     updated_at = db.Column(db.DateTime(timezone=True), onupdate=func.now())
 

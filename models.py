@@ -1,6 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import func
 from flask_bcrypt import Bcrypt
+from flask_login import UserMixin, LoginManager
 
 db = SQLAlchemy()
 bcrypt = Bcrypt()
@@ -13,7 +14,7 @@ def connect_db(app):
 
 # Models
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     """Issue Tracker user."""
 
     __tablename__ = "users"
@@ -23,7 +24,8 @@ class User(db.Model):
     first_name = db.Column(db.String(30), nullable=False)
     last_name = db.Column(db.String(30), nullable=False)
     password = db.Column(db.Text, nullable=False)
-    role = db.Column(db.Text, nullable=False, default='user')
+    role = db.Column(db.Integer, nullable=False, default=0)
+    is_active = db.Column(db.Boolean, nullable=False, default=True)
 
     @classmethod
     def register(cls, email, first_name, last_name, password):
@@ -35,7 +37,7 @@ class User(db.Model):
             email=email,
             first_name=first_name,
             last_name=last_name,
-            password=password
+            password=hashed_utf8
         )
 
         db.session.add(user)
@@ -58,7 +60,6 @@ class User(db.Model):
     def __repr__(self):
         return '<{} "{} {}" {}>'.format(self.id, self.first_name, self.last_name, self.role)
 
-
 class Issue(db.Model):
     """Issue model."""
 
@@ -66,20 +67,37 @@ class Issue(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.Text, nullable=False)
-    summary = db.Column(db.Text, nullable=False)
     text = db.Column(db.Text, nullable=False)
-    category_id = db.Column(db.Integer, nullable=False, default=1)
+    category = db.Column(db.Integer, db.ForeignKey('categories.category_id'), nullable=False, default=0)
     reporter = db.Column(db.Integer, db.ForeignKey(
-        'users.id'), nullable=False, default=2)
+        'users.id'), nullable=False)
     assignee = db.Column(db.Integer, db.ForeignKey(
-        'users.id'), nullable=False, default=3)
-    priority = db.Column(db.Integer, nullable=False, default=1)
-    status_code = db.Column(db.Integer, nullable=False, default=1)
-    resolution = db.Column(db.Integer, nullable=False, default=1)
-    # resolution_date = db.Column(db.DateTime)
+        'users.id'))
+    priority = db.Column(db.Integer, db.ForeignKey('priorities.priority_id'), nullable=False, default=1)
+    status = db.Column(db.Integer, db.ForeignKey('statuses.status_id'), nullable=False, default=0)
+    resolution_code = db.Column(db.Integer, db.ForeignKey('resolutions.resolution_id'), nullable=False, default=0)
     created_at = db.Column(db.DateTime(timezone=True), nullable=False,
                            server_default=func.now())
     updated_at = db.Column(db.DateTime(timezone=True), onupdate=func.now())
+
+    comments = db.relationship('Comment', lazy='select', backref=db.backref('issue', lazy='joined'))
+
+# class AssigneeIssue(db.Model):
+#     """Assignees Issues."""
+
+#     __tablename__ = "assignees_issues"
+
+#     assignee_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True, nullable=False)
+#     issue_id = db.Column(db.Integer, db.ForeignKey('issues.id'), primary_key=True, nullable=False)
+
+# class ReporterIssue(db.Model):
+#     """Reporters Issues."""
+
+#     __tablename__ = "reporters_issues"
+
+#     reporter_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True, nullable=False)
+#     issue_id = db.Column(db.Integer, db.ForeignKey('issues.id'), primary_key=True, nullable=False)
+
 
 
 class Comment(db.Model):
@@ -102,9 +120,8 @@ class Role(db.Model):
 
     __tablename__ = "roles"
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    role_name = db.Column(db.String)
+    role_id = db.Column(db.Integer, primary_key=True)
+    role_label = db.Column(db.String, nullable=False)
 
 
 class Priority(db.Model):
@@ -112,7 +129,7 @@ class Priority(db.Model):
 
     __tablename__ = "priorities"
 
-    priority_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    priority_id = db.Column(db.Integer, primary_key=True)
     priority_label = db.Column(db.String, nullable=False)
 
 
@@ -121,7 +138,7 @@ class Resolution(db.Model):
 
     __tablename__ = "resolutions"
 
-    resolution_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    resolution_id = db.Column(db.Integer, primary_key=True)
     resolution_label = db.Column(db.String, nullable=False)
 
 
@@ -130,5 +147,13 @@ class Status(db.Model):
 
     __tablename__ = "statuses"
 
-    status_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    status_id = db.Column(db.Integer, primary_key=True)
     status_label = db.Column(db.String, nullable=False)
+
+class Category(db.Model):
+    """Categories model."""
+
+    __tablename__ = "categories"
+
+    category_id = db.Column(db.Integer, primary_key=True)
+    category_label = db.Column(db.Text, nullable=False)

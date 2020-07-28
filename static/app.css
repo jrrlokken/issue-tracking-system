@@ -1,6 +1,4 @@
-/* body {
-  background-color: aqua;
-} */
+
 .main-container {
   margin-top: 20px;
 }
@@ -13,6 +11,7 @@
 .issue-list {
   width: 100%;
   font-size: 1rem;
+  cursor: pointer;
 }
 
 #footer {
@@ -22,12 +21,4 @@
 li.nav-item {
   margin: 0 5px;
   padding: 0 5px;
-}
-
-.error {
-  color: tomato;
-}
-
-.success {
-  color: green;
 }

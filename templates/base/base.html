@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link
       rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.0/cerulean/bootstrap.min.css"
+      href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.0/sandstone/bootstrap.min.css"
     />
     <link rel="stylesheet" href="/static/app.css" />
     <title>Issue Tracking System</title>
@@ -17,12 +17,12 @@
       </div>
 
       <section id="header">
-        <div class="container">
+        <div class="container mt-3">
           {% with messages = get_flashed_messages(with_categories=true) %} {% if
           messages %}
           <section class="messages">
             {% for category,msg in messages %}
-            <p class="{{category}}">{{msg}}</p>
+            <p class="alert-{{category}} p-2">{{msg}}</p>
             {% endfor %}
           </section>
           {% endif %} {% endwith %} {% block header %} {% endblock %}

@@ -1,8 +1,10 @@
+{% if issues %}
+
 <table class="table table-sm table-bordered issue-list">
   <thead class="thead-light">
     <tr>
       <th>Issue ID</th>
-      <th>Issue Type</th>
+      <th>Title</th>
       <th>Description</th>
       <th>Status</th>
       <th>Priority</th>
@@ -10,7 +12,20 @@
     </tr>
   </thead>
   <tbody>
+    {% for issue in issues %}
+
     <tr class="">
+      <td>{{ issue.id }}</td>
+      <td><a href="/issues/{{ issue.id }}">{{ issue.title }}</a></td>
+      <td>{{ issue.text }}</td>
+      <td>{{ issue.status }}</td>
+      <td>{{ issue.priority }}</td>
+      <td>{{ issue.created_at }}</td>
+    </tr>
+
+    {% endfor %}
+
+    <!-- <tr class="">
       <td>0001</td>
       <td>IT</td>
       <td>Printer jobs disappearing...</td>
@@ -41,6 +56,8 @@
       <td>Submitted</td>
       <td>High</td>
       <td>Friday, January 7th, 2004 15:30pm</td>
-    </tr>
+    </tr> -->
   </tbody>
 </table>
+
+{% endif %}

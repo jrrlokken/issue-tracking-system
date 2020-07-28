@@ -1,0 +1,21 @@
+{% extends 'base/base.html' %}
+
+{% block main %}
+
+<h1 class="display-6">Edit Issue #{{ issue.id }}</h1>
+
+<form>
+
+{% include "base/_form.html" %}
+
+  <button type="submit"
+          formmethod="POST" 
+          formaction="/issues/new" 
+          class="btn btn-primary">
+          SAVE
+  </button>
+  <a class="btn btn-warning" href="/issues/{{ issue.id }}">CANCEL</a>
+</form>
+
+
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'base/base.html' %}
+
+{% block main %}
+
+<div>
+	<h1 class="display-6">Issue #{{ issue.id }}</h1>
+
+	<h4>{{ issue.title }}</h4>
+	<br />
+	<p>{{ issue.text }}</p>
+
+	<a class="btn btn-warning mr-2" href="/issues/{{ issue.id }}/edit">EDIT ISSUE</a>
+	<a class="btn btn-primary" href="/issues/{{ issue.id }}/edit">ADD COMMENT</a>
+
+	{% include "comments/new.html" %}
+	
+</div>
+
+
+
+
+
+{% endblock %}

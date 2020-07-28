@@ -4,17 +4,20 @@
     <li class="nav-item active">
       <a class="nav-link" href="/">Home</a>
     </li>
-    <!-- <li class="nav-item">
+    {% if current_user.is_authenticated %}
+    <li class="nav-item">
       <a class="nav-link" href="/logout">Logout</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/issues/new">New Issue</a>
+    </li>
+    {% else %}
+    <li class="nav-item">
+      <a class="nav-link" href="/register">Register</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" href="/login">Login</a>
     </li>
-    <li class="nav-item">
-      <a class="nav-link" href="/register">Register</a>
-    </li> -->
-    <li class="nav-item">
-      <a class="nav-link" href="/issues/new">New Issue</a>
-    </li>
+    {% endif %}
   </ul>
 </nav>

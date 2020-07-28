@@ -45,12 +45,19 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
+#############################################################
+# Index routes
+
+
 @app.route("/")
 def index():
     """Index view."""
 
-    issues = Issue.query.all()
-    return render_template('base/index.html', issues=issues)
+    if current_user.is_authenticated:
+        issues = Issue.query.filter(Issue.reporter == current_user.id).all()
+        return render_template('base/index.html', issues=issues)
+
+    return render_template('base/index.html')
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -187,7 +194,7 @@ def edit_issue(issue_id):
 
         db.session.commit()
         flash("Issue edited", "success")
-        return redirect(f"/issues/{{ issue.id }}")
+        return redirect(f"/issues/{issue.id}")
 
     return render_template("issues/edit.html", issue=issue, form=form)
 
@@ -196,14 +203,24 @@ def edit_issue(issue_id):
 #############################################################
 # Comment routes.
 
-@app.route("/issues/<int:issue_id>/comments/new", methods=["GET", "POST"])
+@app.route("/issues/<int:issue_id>/comments/new", methods=["POST"])
 @login_required
 def new_comment(issue_id):
     """New comment form and handler."""
 
     form = NewCommentForm()
+    issue = Issue.query.get_or_404(issue_id)
 
-    return render_template("comments/new.html", issue_id=issue_id, form=form)
+    if form.validate_on_submit():
+        comment_text = form.text.data
+        comment = Comment(comment_text=comment_text, comment_issue=issue_id, comment_user=current_user.id)
+
+        db.session.add(comment)
+        db.session.commit()
+        flash("Comment added.", "success")
+        return redirect(f"/issues/{issue_id}")
+
+    return render_template("comments/new.html", issue=issue, form=form)
 
     
 

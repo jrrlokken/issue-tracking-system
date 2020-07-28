@@ -62,4 +62,4 @@ class EditIssueForm(FlaskForm):
 class NewCommentForm(FlaskForm):
     """Form form new comment."""
 
-    text = TextAreaField("Comment", validators=[InputRequired()])
+    text = TextAreaField("Comment:", validators=[InputRequired()])

@@ -6,14 +6,24 @@
 	<h1 class="display-6">Issue #{{ issue.id }}</h1>
 
 	<h4>{{ issue.title }}</h4>
-	<br />
+	<br>
 	<p>{{ issue.text }}</p>
+	<br>
+	{% if issue.comments %}
+	{% for comment in issue.comments %}
+	<div>
+	  <p class="">{{ comment.comment_date }}</p>
+	  <p>{{ comment.comment_text }}</p>
+	</div>
+	
+	{% endfor %}
+	{% endif %}
+	<br>
 
 	<a class="btn btn-warning mr-2" href="/issues/{{ issue.id }}/edit">EDIT ISSUE</a>
-	<a class="btn btn-primary" href="/issues/{{ issue.id }}/edit">ADD COMMENT</a>
-
+</div>
+<div class="mt-5">
 	{% include "comments/new.html" %}
-	
 </div>
 
 

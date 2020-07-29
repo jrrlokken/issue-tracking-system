@@ -1,12 +1,7 @@
 <form>
-{% include "base/_form.html" %}
+  {% include "base/_form.html" %}
 
-<button type="submit"
-            formmethod="POST" 
-            formaction="/issues/{{ issue.id }}/comments/new" 
-            class="btn btn-primary">
-            ADD COMMENT
-</button>
+  <button type="submit" formmethod="POST" formaction="/issues/{{ issue.id }}/comments/new" class="btn btn-info">
+    ADD COMMENT
+  </button>
 </form>
-
-

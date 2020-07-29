@@ -3,24 +3,29 @@
 {% block main %}
 
 <div>
-	<h1 class="display-6">Issue #{{ issue.id }}</h1>
+	<h1 class="display-6">{{ issue.title }}</h1>
 
-	<h4>{{ issue.title }}</h4>
+	<h4>Issue #{{ issue.id }}</h4>
 	<br>
 	<p>{{ issue.text }}</p>
 	<br>
 	{% if issue.comments %}
 	{% for comment in issue.comments %}
-	<div>
-	  <p class="">{{ comment.comment_date }}</p>
-	  <p>{{ comment.comment_text }}</p>
+	<div class="comment-wrapper my-2">
+		<p class="font-weight-light">{{ comment.comment_date.replace(microsecond=0) }}</p>
+		<p>{{ comment.comment_text }}</p>
+		<br>
 	</div>
-	
+
 	{% endfor %}
 	{% endif %}
 	<br>
 
 	<a class="btn btn-warning mr-2" href="/issues/{{ issue.id }}/edit">EDIT ISSUE</a>
+	{% if current_user.role == 'admin' %}
+	<button type="submit" class="btn btn-danger" formaction="/issues/{{ issue.id }}/delete" formmethod="POST">DELETE
+		ISSUE</button>
+	{% endif %}
 </div>
 <div class="mt-5">
 	{% include "comments/new.html" %}

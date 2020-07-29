@@ -20,7 +20,7 @@
       <td>{{ issue.text }}</td>
       <td>{{ issue.status }}</td>
       <td>{{ issue.priority }}</td>
-      <td>{{ issue.created_at }}</td>
+      <td>{{ issue.created_at.replace(microsecond=0) }}</td>
     </tr>
 
     {% endfor %}

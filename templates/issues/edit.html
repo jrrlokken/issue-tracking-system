@@ -6,13 +6,10 @@
 
 <form>
 
-{% include "base/_form.html" %}
+  {% include "base/_form.html" %}
 
-  <button type="submit"
-          formmethod="POST" 
-          formaction="/issues/new" 
-          class="btn btn-primary">
-          SAVE
+  <button type="submit" formmethod="POST" formaction="/issues/{{ issue.id }}/edit" class="btn btn-info">
+    SAVE
   </button>
   <a class="btn btn-warning" href="/issues/{{ issue.id }}">CANCEL</a>
 </form>

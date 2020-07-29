@@ -57,6 +57,9 @@ class EditIssueForm(FlaskForm):
     priority = SelectField("Priority",
                             validators=[InputRequired()],
                             coerce=int)
+    status = SelectField("Status",
+                          validators=[InputRequired()],
+                          coerce=int)
 
 
 class NewCommentForm(FlaskForm):

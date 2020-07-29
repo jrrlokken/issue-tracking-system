@@ -24,7 +24,7 @@ class User(UserMixin, db.Model):
     first_name = db.Column(db.String(30), nullable=False)
     last_name = db.Column(db.String(30), nullable=False)
     password = db.Column(db.Text, nullable=False)
-    role = db.Column(db.Integer, nullable=False, default=0)
+    role = db.Column(db.String, nullable=False, default='user')
     is_active = db.Column(db.Boolean, nullable=False, default=True)
 
     @classmethod
@@ -82,22 +82,6 @@ class Issue(db.Model):
 
     comments = db.relationship('Comment', lazy='select', backref=db.backref('issue', lazy='joined'))
 
-# class AssigneeIssue(db.Model):
-#     """Assignees Issues."""
-
-#     __tablename__ = "assignees_issues"
-
-#     assignee_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True, nullable=False)
-#     issue_id = db.Column(db.Integer, db.ForeignKey('issues.id'), primary_key=True, nullable=False)
-
-# class ReporterIssue(db.Model):
-#     """Reporters Issues."""
-
-#     __tablename__ = "reporters_issues"
-
-#     reporter_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True, nullable=False)
-#     issue_id = db.Column(db.Integer, db.ForeignKey('issues.id'), primary_key=True, nullable=False)
-
 
 
 class Comment(db.Model):
@@ -106,13 +90,10 @@ class Comment(db.Model):
     __tablename__ = "comments"
 
     comment_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    comment_date = db.Column(
-        db.DateTime, nullable=False, server_default=func.now())
+    comment_date = db.Column(db.DateTime, nullable=False, server_default=func.now())
     comment_text = db.Column(db.Text, nullable=False)
-    comment_user = db.Column(
-        db.Integer, db.ForeignKey('users.id'), nullable=False)
-    comment_issue = db.Column(
-        db.Integer, db.ForeignKey('issues.id'), nullable=False)
+    comment_user = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    comment_issue = db.Column(db.Integer, db.ForeignKey('issues.id'), nullable=False)
 
 
 class Role(db.Model):
@@ -156,4 +137,4 @@ class Category(db.Model):
     __tablename__ = "categories"
 
     category_id = db.Column(db.Integer, primary_key=True)
-    category_label = db.Column(db.Text, nullable=False)
+    category_label = db.Column(db.String, nullable=False)

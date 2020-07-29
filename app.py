@@ -1,5 +1,4 @@
-# import os
-# import functools
+import os
 
 from flask import Flask, request, render_template, redirect, flash, jsonify, url_for
 from flask import session, make_response
@@ -9,20 +8,16 @@ from flask_login import login_user, logout_user, current_user, login_required
 from flask_debugtoolbar import DebugToolbarExtension
 
 from dotenv import load_dotenv
-import os
 
 from forms import *
 from models import db, connect_db, User, Issue, Comment, Role, Priority, Resolution, Status, Category
-# from helpers import friendly_date
 
 
 load_dotenv()
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = (
-    os.environ.get('SQLALCHEMY_DATABASE_URI'))
-
+app.config['SQLALCHEMY_DATABASE_URI'] = (os.environ.get('SQLALCHEMY_DATABASE_URI'))
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
@@ -54,7 +49,13 @@ def index():
     """Index view."""
 
     if current_user.is_authenticated:
-        issues = Issue.query.filter(Issue.reporter == current_user.id).all()
+        if current_user.role == 'admin':
+            issues = Issue.query.all()
+        elif current_user.role == 'assignee':
+            issues = Issue.query.filter(Issue.assignee == current_user.id).all()
+        else:
+            issues = Issue.query.filter(Issue.reporter == current_user.id).all()
+
         return render_template('base/index.html', issues=issues)
 
     return render_template('base/index.html')
@@ -71,8 +72,8 @@ def register():
 
     if form.validate_on_submit():
         if User.query.filter(User.email == form.email.data).first():
-            # error, there already is a user using this bank address
-            flash(f"{form.email.data} has already been registered", "danger")
+            # error, there already is a user using this email address
+            flash(f"{form.email.data} has already been registered", "warning")
             return redirect("/register")
 
         email = form.email.data
@@ -83,6 +84,7 @@ def register():
 
         db.session.add(user)
         db.session.commit()
+        login_user(user)
         flash("Registered.", "success")
 
         return redirect("/login")
@@ -102,11 +104,12 @@ def login():
     if form.validate_on_submit():
         user = User.authenticate(email=form.email.data, password=form.password.data)
         if user is None:
-            flash('Invalid email or password', 'danger')
+            flash('Invalid email or password', 'warning')
             return redirect(url_for('login'))
         login_user(user)
         flash("Welcome!", "success")
         return redirect(url_for('index'))
+
     return render_template('users/login.html', form=form)
 
 
@@ -133,6 +136,7 @@ def new_issue():
     categories_list = [(c.category_id, c.category_label) for c in categories]
     priorities = Priority.query.all()
     priorities_list = [(p.priority_id, p.priority_label) for p in priorities]
+    
 
     # import pdb; pdb.set_trace()
 
@@ -178,20 +182,28 @@ def edit_issue(issue_id):
     categories_list = [(c.category_id, c.category_label) for c in categories]
     priorities = Priority.query.all()
     priorities_list = [(p.priority_id, p.priority_label) for p in priorities]
+    statuses = Status.query.all()
+    statuses_list = [(s.status_id, s.status_label) for s in statuses]
+
     form.category.choices = categories_list
     form.priority.choices = priorities_list
+    form.status.choices = statuses_list
     
     if form.validate_on_submit():
         title = form.title.data
         text = form.text.data
         category = form.category.data
         priority = form.priority.data
+        status = form.status.data
 
         issue.title = title
         issue.text = text
         issue.category = category
         issue.priority = priority
+        issue.status = status
 
+        db.session.merge(issue)
+        db.session.flush()
         db.session.commit()
         flash("Issue edited", "success")
         return redirect(f"/issues/{issue.id}")
@@ -199,6 +211,21 @@ def edit_issue(issue_id):
     return render_template("issues/edit.html", issue=issue, form=form)
 
 
+@app.route("/issues/<int:issue_id>/delete", methods=["POST"])
+@login_required
+def delete_issue(issue_id):
+    """Delete an existing issue.  For admins only."""
+
+    if current_user.role != 'admin':
+        flash("Admin privileges required.", "warning")
+        return redirect("/")
+    
+    if request.method == "POST":
+        issue = Issue.query.get_or_404(issue_id)
+        db.session.delete(issue)
+        db.session.commit()
+        flash(f"Issue #{issue_id} has been deleted.", "success")
+        return redirect("/")
 
 #############################################################
 # Comment routes.

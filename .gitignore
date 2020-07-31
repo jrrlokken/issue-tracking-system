@@ -4,3 +4,4 @@ __pycache__
 *SETTINGS*
 .directory
 *.env
+seed.py

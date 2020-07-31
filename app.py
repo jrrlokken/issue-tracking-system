@@ -39,6 +39,21 @@ def load_user(user_id):
 
     return User.query.get(int(user_id))
 
+def is_assignee(user):
+    """Is the user an assignee?"""
+
+    if user.role == 'assignee':
+        return user
+
+    return False
+
+def is_admin(user):
+    """Is the user an assignee?"""
+
+    if user.role == 'admin':
+        return user
+
+    return False
 
 #############################################################
 # Index routes
@@ -217,7 +232,7 @@ def delete_issue(issue_id):
     """Delete an existing issue.  For admins only."""
 
     if current_user.role != 'admin':
-        flash("Admin privileges required.", "warning")
+        flash("Admin privileges required.", "danger")
         return redirect("/")
     
     if request.method == "POST":
@@ -250,7 +265,22 @@ def new_comment(issue_id):
     return render_template("comments/new.html", issue=issue, form=form)
 
     
+@app.route("/comments/<int:comment_id>/delete", methods=["POST"])
+@login_required
+def delete_comment(comment_id):
+    """Delete an existing comment.  For admins only."""
 
+    if is_admin(current_user):
+        if request.method == "POST":
+            comment = Comment.query.get_or_404(comment_id)
+            db.session.delete(comment)
+            db.session.commit()
+            flash(f"Comment #{comment_id} has been deleted.", "success")
+            return redirect("/")
+    
+    flash("Admin privileges required.", "danger")
+    return redirect("/")
+    
 
 
 

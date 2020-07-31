@@ -4,6 +4,7 @@
   <thead class="thead-light">
     <tr>
       <th>Issue ID</th>
+      <th>Category</th>
       <th>Title</th>
       <th>Description</th>
       <th>Status</th>
@@ -12,10 +13,12 @@
     </tr>
   </thead>
   <tbody>
+
     {% for issue in issues %}
 
     <tr class="">
       <td>{{ issue.id }}</td>
+      <td>{{ issue.category }}</td>
       <td><a href="/issues/{{ issue.id }}">{{ issue.title }}</a></td>
       <td>{{ issue.text }}</td>
       <td>{{ issue.status }}</td>

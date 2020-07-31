@@ -21,10 +21,15 @@
 	{% endif %}
 	<br>
 
+	{% if current_user.role == 'assignee' %}
 	<a class="btn btn-warning mr-2" href="/issues/{{ issue.id }}/edit">EDIT ISSUE</a>
+	{% endif %}
+
 	{% if current_user.role == 'admin' %}
+	<a class="btn btn-warning mr-2" href="/issues/{{ issue.id }}/edit">EDIT ISSUE</a>
 	<button type="submit" class="btn btn-danger" formaction="/issues/{{ issue.id }}/delete" formmethod="POST">DELETE
 		ISSUE</button>
+	
 	{% endif %}
 </div>
 <div class="mt-5">

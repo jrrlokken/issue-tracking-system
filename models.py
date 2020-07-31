@@ -74,15 +74,15 @@ class Issue(db.Model):
     reporter = db.Column(db.Integer, db.ForeignKey(
         'users.id'), nullable=False)
     assignee = db.Column(db.Integer, db.ForeignKey(
-        'users.id'))
-    priority = db.Column(db.Integer, db.ForeignKey('priorities.priority_id'), nullable=False, default=1)
-    status = db.Column(db.Integer, db.ForeignKey('statuses.status_id'), nullable=False, default=0)
+        'users.id'), nullable=False)
+    priority = db.Column(db.String, nullable=False, default="medium")
+    status = db.Column(db.String, nullable=False, default="submitted")
     resolution_code = db.Column(db.Integer, db.ForeignKey('resolutions.resolution_id'), nullable=False, default=0)
     created_at = db.Column(db.DateTime(timezone=True), nullable=False,
                            server_default=func.now())
     updated_at = db.Column(db.DateTime(timezone=True), onupdate=func.now())
 
-    # comments = db.relationship('Comment', lazy='select', backref=db.backref('issue', lazy='joined'))
+    comments = db.relationship('Comment', lazy='select', backref=db.backref('issue', passive_deletes=True, lazy='joined'))
 
 
 
@@ -97,7 +97,7 @@ class Comment(db.Model):
     comment_user = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
     comment_issue = db.Column(db.Integer, db.ForeignKey('issues.id', ondelete='CASCADE'), nullable=False)
 
-    issues = db.relationship('Issue', backref=db.backref('comment', passive_deletes=True))
+    # issues = db.relationship('Issue', backref=db.backref('comment', passive_deletes=True))
 
 class Role(db.Model):
     """Role model."""
@@ -108,13 +108,13 @@ class Role(db.Model):
     role_label = db.Column(db.String, nullable=False)
 
 
-class Priority(db.Model):
-    """Priorities model."""
+# class Priority(db.Model):
+#     """Priorities model."""
 
-    __tablename__ = "priorities"
+#     __tablename__ = "priorities"
 
-    priority_id = db.Column(db.Integer, primary_key=True)
-    priority_label = db.Column(db.String, nullable=False)
+#     priority_id = db.Column(db.Integer, primary_key=True)
+#     priority_label = db.Column(db.String, nullable=False)
 
 
 class Resolution(db.Model):
@@ -126,13 +126,13 @@ class Resolution(db.Model):
     resolution_label = db.Column(db.String, nullable=False)
 
 
-class Status(db.Model):
-    """Priorities model."""
+# class Status(db.Model):
+#     """Priorities model."""
 
-    __tablename__ = "statuses"
+#     __tablename__ = "statuses"
 
-    status_id = db.Column(db.Integer, primary_key=True)
-    status_label = db.Column(db.String, nullable=False)
+#     status_id = db.Column(db.Integer, primary_key=True)
+#     status_label = db.Column(db.String, nullable=False)
 
 class Category(db.Model):
     """Categories model."""

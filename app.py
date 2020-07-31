@@ -10,7 +10,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from dotenv import load_dotenv
 
 from forms import *
-from models import db, connect_db, User, Issue, Comment, Role, Priority, Resolution, Status, Category
+from models import db, connect_db, User, Issue, Comment, Role, Resolution, Category
 
 
 load_dotenv()
@@ -67,9 +67,9 @@ def index():
         if current_user.role == 'admin':
             issues = Issue.query.all()
         elif current_user.role == 'assignee':
-            issues = Issue.query.filter(Issue.assignee == current_user.id).all()
+            issues = Issue.query.filter(Issue.assignee == current_user.id, Issue.status != "resolved").all()
         else:
-            issues = Issue.query.filter(Issue.reporter == current_user.id).all()
+            issues = Issue.query.filter(Issue.reporter == current_user.id, Issue.status != "resolved").all()
 
         return render_template('base/index.html', issues=issues)
 
@@ -149,15 +149,15 @@ def new_issue():
 
     categories = Category.query.all()
     categories_list = [(c.category_id, c.category_label) for c in categories]
-    priorities = Priority.query.all()
-    priorities_list = [(p.priority_id, p.priority_label) for p in priorities]
+    # priorities = Priority.query.all()
+    # priorities_list = [(p.priority_id, p.priority_label) for p in priorities]
     
 
     # import pdb; pdb.set_trace()
 
     form = NewIssueForm(category=0, priority=1)
     form.category.choices = categories_list
-    form.priority.choices = priorities_list
+    form.priority.choices = ["low","medium","high","urgent"]
 
     if form.validate_on_submit():
         title = form.title.data
@@ -195,14 +195,14 @@ def edit_issue(issue_id):
 
     categories = Category.query.all()
     categories_list = [(c.category_id, c.category_label) for c in categories]
-    priorities = Priority.query.all()
-    priorities_list = [(p.priority_id, p.priority_label) for p in priorities]
-    statuses = Status.query.all()
-    statuses_list = [(s.status_id, s.status_label) for s in statuses]
+    # priorities = Priority.query.all()
+    # priorities_list = [(p.priority_id, p.priority_label) for p in priorities]
+    # statuses = Status.query.all()
+    # statuses_list = [(s.status_id, s.status_label) for s in statuses]
 
     form.category.choices = categories_list
-    form.priority.choices = priorities_list
-    form.status.choices = statuses_list
+    form.priority.choices = ["low","medium","high","urgent"]
+    form.status.choices = ["submitted", "assigned", "resolved"]
     
     if form.validate_on_submit():
         title = form.title.data

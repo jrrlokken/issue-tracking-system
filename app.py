@@ -10,7 +10,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from dotenv import load_dotenv
 
 from forms import *
-from models import db, connect_db, User, Issue, Comment, Role, Priority, Resolution, Status, Category
+from models import db, connect_db, User, Issue, Comment,  Priority, Resolution, Status, Category
 
 
 load_dotenv()
@@ -67,9 +67,9 @@ def index():
         if current_user.role == 'admin':
             issues = Issue.query.all()
         elif current_user.role == 'assignee':
-            issues = Issue.query.filter(Issue.assignee == current_user.id).all()
+            issues = Issue.query.filter(Issue.assignee == current_user.id, Issue.status != 2).all()
         else:
-            issues = Issue.query.filter(Issue.reporter == current_user.id).all()
+            issues = Issue.query.filter(Issue.reporter == current_user.id, Issue.status != 2).all()
 
         return render_template('base/index.html', issues=issues)
 
@@ -102,7 +102,7 @@ def register():
         login_user(user)
         flash("Registered.", "success")
 
-        return redirect("/login")
+        return redirect("/")
 
     return render_template('users/register.html', form=form)
 
@@ -217,8 +217,8 @@ def edit_issue(issue_id):
         issue.priority = priority
         issue.status = status
 
-        db.session.merge(issue)
-        db.session.flush()
+        # db.session.merge(issue)
+        # db.session.flush()
         db.session.commit()
         flash("Issue edited", "success")
         return redirect(f"/issues/{issue.id}")

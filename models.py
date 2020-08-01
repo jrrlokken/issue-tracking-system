@@ -27,7 +27,7 @@ class User(UserMixin, db.Model):
     role = db.Column(db.String, nullable=False, default='user')
     is_active = db.Column(db.Boolean, nullable=False, default=True)
 
-    comments = db.relationship('Comment', lazy='select', cascade='all, delete', backref=db.backref('user', lazy='joined'))
+    comments = db.relationship('Comment', lazy='select', backref=db.backref('user', lazy='joined'))
 
     @classmethod
     def register(cls, email, first_name, last_name, password):
@@ -74,7 +74,7 @@ class Issue(db.Model):
     reporter = db.Column(db.Integer, db.ForeignKey(
         'users.id'), nullable=False)
     assignee = db.Column(db.Integer, db.ForeignKey(
-        'users.id'))
+        'users.id', nullable=False))
     priority = db.Column(db.Integer, db.ForeignKey('priorities.priority_id'), nullable=False, default=1)
     status = db.Column(db.Integer, db.ForeignKey('statuses.status_id'), nullable=False, default=0)
     resolution_code = db.Column(db.Integer, db.ForeignKey('resolutions.resolution_id'), nullable=False, default=0)
@@ -82,7 +82,7 @@ class Issue(db.Model):
                            server_default=func.now())
     updated_at = db.Column(db.DateTime(timezone=True), onupdate=func.now())
 
-    # comments = db.relationship('Comment', lazy='select', backref=db.backref('issue', lazy='joined'))
+    comments = db.relationship('Comment', lazy='select', backref=db.backref('issue', lazy='joined'))
 
 
 
@@ -94,18 +94,17 @@ class Comment(db.Model):
     comment_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     comment_date = db.Column(db.DateTime, nullable=False, server_default=func.now())
     comment_text = db.Column(db.Text, nullable=False)
-    comment_user = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
-    comment_issue = db.Column(db.Integer, db.ForeignKey('issues.id', ondelete='CASCADE'), nullable=False)
+    comment_user = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    comment_issue = db.Column(db.Integer, db.ForeignKey('issues.id'), nullable=False)
 
-    issues = db.relationship('Issue', backref=db.backref('comment', passive_deletes=True))
 
-class Role(db.Model):
-    """Role model."""
+# class Role(db.Model):
+#     """Role model."""
 
-    __tablename__ = "roles"
+#     __tablename__ = "roles"
 
-    role_id = db.Column(db.Integer, primary_key=True)
-    role_label = db.Column(db.String, nullable=False)
+#     role_id = db.Column(db.Integer, primary_key=True)
+#     role_label = db.Column(db.String, nullable=False)
 
 
 class Priority(db.Model):

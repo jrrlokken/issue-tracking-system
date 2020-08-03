@@ -10,18 +10,18 @@ from flask_debugtoolbar import DebugToolbarExtension
 from dotenv import load_dotenv
 
 from forms import *
-from models import db, connect_db, User, Issue, Comment,  Priority, Resolution, Status, Category
+from models import db, connect_db, User, Issue, Comment, Priority, Resolution, Status, Category
 
 
 load_dotenv()
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = (os.environ.get('SQLALCHEMY_DATABASE_URI'))
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'postgres:///issue_tracker')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'keepitsecretkeepitsafe!')
 
 debug = DebugToolbarExtension(app)
 connect_db(app)
@@ -39,21 +39,21 @@ def load_user(user_id):
 
     return User.query.get(int(user_id))
 
-def is_assignee(user):
-    """Is the user an assignee?"""
+# def is_assignee(user):
+#     """Is the user an assignee?"""
 
-    if user.role == 'assignee':
-        return user
+#     if user.role == 'assignee':
+#         return user
 
-    return False
+#     return False
 
-def is_admin(user):
-    """Is the user an assignee?"""
+# def is_admin(user):
+#     """Is the user an assignee?"""
 
-    if user.role == 'admin':
-        return user
+#     if user.role == 'admin':
+#         return user
 
-    return False
+#     return False
 
 #############################################################
 # Index routes

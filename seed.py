@@ -1,5 +1,5 @@
 from app import app
-from models import db, connect_db, User, Issue, Comment,  Priority, Resolution, Status, Category
+from models import db, connect_db, User, Issue, Comment, Priority, Resolution, Status, Category
 
 db.drop_all()
 db.create_all()
@@ -93,7 +93,7 @@ c3 = Category(
 # )
 
 
-db.session.add_all([p1,p2,p3,p4,s1,s2,s3,c1,c2,c3])
+db.session.add_all([p1,p2,p3,p4,r1,r2,r3,s1,s2,s3,c1,c2,c3])
 db.session.commit()
 
 # Sample users.

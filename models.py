@@ -27,7 +27,7 @@ class User(UserMixin, db.Model):
     role = db.Column(db.String, nullable=False, default='user')
     is_active = db.Column(db.Boolean, nullable=False, default=True)
 
-    comments = db.relationship('Comment', lazy='select', backref=db.backref('user', lazy='joined'))
+    # comments = db.relationship('Comment', lazy='select', backref=db.backref('user', lazy='joined'))
 
     @classmethod
     def register(cls, email, first_name, last_name, password):
@@ -45,6 +45,7 @@ class User(UserMixin, db.Model):
         db.session.add(user)
         return user
 
+
     @classmethod
     def authenticate(cls, email, password):
         """Validate that user exists & password is correct.
@@ -59,6 +60,7 @@ class User(UserMixin, db.Model):
 
         return False
 
+
     def __repr__(self):
         return '<{} "{} {}" {}>'.format(self.id, self.first_name, self.last_name, self.role)
 
@@ -71,10 +73,8 @@ class Issue(db.Model):
     title = db.Column(db.Text, nullable=False)
     text = db.Column(db.Text, nullable=False)
     category = db.Column(db.Integer, db.ForeignKey('categories.category_id'), nullable=False, default=0)
-    reporter = db.Column(db.Integer, db.ForeignKey(
-        'users.id'), nullable=False)
-    assignee = db.Column(db.Integer, db.ForeignKey(
-        'users.id', nullable=False))
+    reporter = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    assignee = db.Column(db.Integer, db.ForeignKey('users.id'))
     priority = db.Column(db.Integer, db.ForeignKey('priorities.priority_id'), nullable=False, default=1)
     status = db.Column(db.Integer, db.ForeignKey('statuses.status_id'), nullable=False, default=0)
     resolution_code = db.Column(db.Integer, db.ForeignKey('resolutions.resolution_id'), nullable=False, default=0)
@@ -98,15 +98,6 @@ class Comment(db.Model):
     comment_issue = db.Column(db.Integer, db.ForeignKey('issues.id'), nullable=False)
 
 
-# class Role(db.Model):
-#     """Role model."""
-
-#     __tablename__ = "roles"
-
-#     role_id = db.Column(db.Integer, primary_key=True)
-#     role_label = db.Column(db.String, nullable=False)
-
-
 class Priority(db.Model):
     """Priorities model."""
 
@@ -117,7 +108,7 @@ class Priority(db.Model):
 
 
 class Resolution(db.Model):
-    """Priorities model."""
+    """Resolutions model."""
 
     __tablename__ = "resolutions"
 

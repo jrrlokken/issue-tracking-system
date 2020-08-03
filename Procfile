@@ -1,2 +1,2 @@
 web: gunicorn app:app
-release: python models.py db upgrade
+release: python app.py db upgrade

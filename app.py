@@ -280,21 +280,3 @@ def delete_comment(comment_id):
     
     flash("Admin privileges required.", "danger")
     return redirect("/")
-    
-
-
-
-
-
-
-
-
-
-
-
-# with app.test_request_context():
-#     print(url_for('index'))
-#     print(url_for('register'))
-#     print(url_for('login'))
-#     print(url_for('login', next='/'))
-#     print(url_for('logout'))

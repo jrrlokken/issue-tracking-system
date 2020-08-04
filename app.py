@@ -117,7 +117,7 @@ def login():
     form = LoginForm()
 
     if form.validate_on_submit():
-        user = User.authenticate(email=form.email.data, password=form.password.data)
+        user = User.query.filter_by(email=form.email.data).first()
         if user is None:
             flash('Invalid email or password', 'warning')
             return redirect(url_for('login'))
@@ -280,3 +280,17 @@ def delete_comment(comment_id):
     
     flash("Admin privileges required.", "danger")
     return redirect("/")
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('base/404.html'), 404
+
+
+
+## API routes
+# /api/v1/resources/users/all
+# /api/v1/resources/users/<user_id>
+# /api/v1/resources/issues/all
+# /api/v1/resources/issues/<issue_id>
+# /api/v1/resources/comments ???
+

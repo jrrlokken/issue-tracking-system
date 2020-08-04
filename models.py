@@ -3,6 +3,7 @@ from sqlalchemy.sql import func
 from flask_bcrypt import Bcrypt
 from flask_login import UserMixin, LoginManager
 
+
 db = SQLAlchemy()
 bcrypt = Bcrypt()
 
@@ -57,8 +58,9 @@ class User(UserMixin, db.Model):
         if user is not None:
             if bcrypt.check_password_hash(user.password, password):
                 return user
-
-        return False
+        return False    
+        
+            
 
 
     def __repr__(self):

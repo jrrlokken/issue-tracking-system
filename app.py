@@ -1,4 +1,5 @@
 import os
+import requests
 
 from flask import Flask, request, render_template, redirect, flash, jsonify, url_for
 from flask import session, make_response
@@ -287,10 +288,40 @@ def page_not_found(e):
 
 
 
+
 ## API routes
 # /api/v1/resources/users/all
 # /api/v1/resources/users/<user_id>
 # /api/v1/resources/issues/all
 # /api/v1/resources/issues/<issue_id>
 # /api/v1/resources/comments ???
+
+
+
+
+# def _url(path):
+#     return 'localhost:5000/api/v1' + path
+
+# def get_issues()
+#     return requests.get(_url('/issues'))
+
+# def issue_detail(issue_id):
+#     return requests.get(_url('/issues/{:d}/'.format(task_id)))
+
+# def add_issue(title, text="", reporter=current_user.id)
+#     return requests.post(_url('/issues/'), json={
+#         'title': title,
+#         'text': text,
+#         'reporter': reporter,
+#     })
+
+# def update_issue(issue_id, title, text, reporter):
+#     url = _url('/issues/{:d}/'.format(task_id))
+#     return requests.put(url, json={
+#         'title': title,
+#         'text': text,
+#         'reporter': reporter,
+#     })
+
+
 

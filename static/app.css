@@ -22,11 +22,3 @@ li.nav-item {
   margin: 0 5px;
   padding: 0 5px;
 }
-
-.jumbotron {
-  background-image: url("./images/background.jpg");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  color: rgba(255,255,255,0.9);
-}

@@ -3,7 +3,7 @@
 
 <div class="jumbotron jumbotron-fluid py-5">
   <div class="container">
-    <h1 class="display-4">Welcome to ITS</h1>
+    <h1 class="display-4 text-light">Welcome to ITS</h1>
     <p class="lead">An issue tracking system</p>
   </div>
 </div>
@@ -11,7 +11,7 @@
 {% endblock %}
 
 {% block main %}
- 
+
 {% if current_user.is_authenticated %}
 
 {% include 'issues/issue_list.html' %}

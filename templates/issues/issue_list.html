@@ -1,70 +1,43 @@
 {% if issues %}
 
-<table class="table table-sm table-hover table-bordered issue-list">
-  <thead class="thead-light">
-    <tr>
-      <th scope="col">Issue ID</th>
-      <th scope="col">Title</th>
-      <th scope="col">Description</th>
-      <th scope="col">Status</th>
-      <th scope="col">Priority</th>
-      <th scope="col">Created</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for issue in issues %}
+<div class="table-responsive">
+  <table class="table table-sm table-hover table-bordered issue-list">
+    <thead class="thead-light">
+      <tr>
+        <th scope="col">Issue ID</th>
+        <th scope="col">Title</th>
+        <th scope="col">Description</th>
+        <th scope="col">Status</th>
+        <th scope="col">Priority</th>
+        <th scope="col">Created</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for issue in issues %}
+      {% if issue.status == 2 %}
+      <tr class="table-success">
+        {% elif issue.priority == 3 %}
+      <tr class="table-danger">
+        {% elif issue.priority == 2 %}
+      <tr class="table-warning">
+        {% elif issue.priority == 0 %}
+      <tr>
+        {% else %}
+      <tr class='table-primary'>
+        {% endif %}
+        <th scope="row">{{ issue.id }}</th>
+        <td><a href="/issues/{{ issue.id }}">{{ issue.title }}</a></td>
+        <td>{{ issue.text }}</td>
+        <td>{{ issue.status }}</td>
 
-    {% if issue.priority == 3 %}
-    <tr class="table-danger">
-      {% elif issue.priority == 2 %}
-    <tr class="table-warning">
-      {% else %}
-    <tr class='table-primary'>
-      {% endif %}
-      <th scope="row">{{ issue.id }}</th>
-      <td><a href="/issues/{{ issue.id }}">{{ issue.title }}</a></td>
-      <td>{{ issue.text }}</td>
-      <td>{{ issue.status }}</td>
+        <td>{{ issue.priority }}</td>
+        <td>{{ issue.created_at.replace(microsecond=0) }}</td>
+      </tr>
 
-      <td>{{ issue.priority }}</td>
-      <td>{{ issue.created_at.replace(microsecond=0) }}</td>
-    </tr>
+      {% endfor %}
 
-    {% endfor %}
-
-    <!-- <tr class="">
-      <td>0001</td>
-      <td>IT</td>
-      <td>Printer jobs disappearing...</td>
-      <td>Assigned</td>
-      <td>Urgent</td>
-      <td>Thursday, January 12th, 2008 11:40am</td>
-    </tr>
-    <tr class="">
-      <td>0005</td>
-      <td>Customer Complaint</td>
-      <td>Product availability complaint</td>
-      <td>Submitted</td>
-      <td>Medium</td>
-      <td>Friday, January 7th, 2004 15:30pm</td>
-    </tr>
-    <tr class="">
-      <td>0006</td>
-      <td>Product Request</td>
-      <td>OWH Astralagus</td>
-      <td>Submitted</td>
-      <td>Medium</td>
-      <td>Friday, January 7th, 2004 15:30pm</td>
-    </tr>
-    <tr class="">
-      <td>0153</td>
-      <td>Customer Complaint</td>
-      <td>Fecal explosion in restroom</td>
-      <td>Submitted</td>
-      <td>High</td>
-      <td>Friday, January 7th, 2004 15:30pm</td>
-    </tr> -->
-  </tbody>
-</table>
+    </tbody>
+  </table>
+</div>
 
 {% endif %}

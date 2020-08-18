@@ -1,24 +1,31 @@
 {% if issues %}
 
-<table class="table table-sm table-bordered issue-list">
+<table class="table table-sm table-hover table-bordered issue-list">
   <thead class="thead-light">
     <tr>
-      <th>Issue ID</th>
-      <th>Title</th>
-      <th>Description</th>
-      <th>Status</th>
-      <th>Priority</th>
-      <th>Created</th>
+      <th scope="col">Issue ID</th>
+      <th scope="col">Title</th>
+      <th scope="col">Description</th>
+      <th scope="col">Status</th>
+      <th scope="col">Priority</th>
+      <th scope="col">Created</th>
     </tr>
   </thead>
   <tbody>
     {% for issue in issues %}
 
-    <tr class="">
-      <td>{{ issue.id }}</td>
+    {% if issue.priority == 3 %}
+    <tr class="table-danger">
+      {% elif issue.priority == 2 %}
+    <tr class="table-warning">
+      {% else %}
+    <tr class='table-primary'>
+      {% endif %}
+      <th scope="row">{{ issue.id }}</th>
       <td><a href="/issues/{{ issue.id }}">{{ issue.title }}</a></td>
       <td>{{ issue.text }}</td>
       <td>{{ issue.status }}</td>
+
       <td>{{ issue.priority }}</td>
       <td>{{ issue.created_at.replace(microsecond=0) }}</td>
     </tr>

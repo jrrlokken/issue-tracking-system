@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 
 from forms import *
 from models import db, connect_db, User, Issue, Comment, Priority, Resolution, Status, Category
-
+from helpers import is_admin, is_assignee
 
 load_dotenv()
 
@@ -40,21 +40,7 @@ def load_user(user_id):
 
     return User.query.get(int(user_id))
 
-# def is_assignee(user):
-#     """Is the user an assignee?"""
 
-#     if user.role == 'assignee':
-#         return user
-
-#     return False
-
-# def is_admin(user):
-#     """Is the user an assignee?"""
-
-#     if user.role == 'admin':
-#         return user
-
-#     return False
 
 #############################################################
 # Index routes
@@ -232,7 +218,7 @@ def edit_issue(issue_id):
 def delete_issue(issue_id):
     """Delete an existing issue.  For admins only."""
 
-    if current_user.role != 'admin':
+    if not is_admin:
         flash("Admin privileges required.", "danger")
         return redirect("/")
     
@@ -301,6 +287,15 @@ def page_not_found(e):
 
 # def _url(path):
 #     return 'localhost:5000/api/v1' + path
+
+# def get_users()
+#     return requests.get(_url('/users'))
+
+# def issue_detail(issue_id):
+#     return requests.get(_url('/users/{:d}/'.format(task_id)))
+
+# def get_issues()
+#     return requests.get(_url('/comments'))
 
 # def get_issues()
 #     return requests.get(_url('/issues'))

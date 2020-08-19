@@ -77,8 +77,8 @@ class Issue(db.Model):
     category = db.Column(db.Integer, db.ForeignKey('categories.category_id'), nullable=False, default=0)
     reporter = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     assignee = db.Column(db.Integer, db.ForeignKey('users.id'))
-    priority = db.Column(db.Integer, db.ForeignKey('priorities.priority_id'), nullable=False, default=1)
-    status = db.Column(db.Integer, db.ForeignKey('statuses.status_id'), nullable=False, default=0)
+    priority = db.Column(db.Integer, db.ForeignKey('priorities.priority_id'), nullable=False, default='1')
+    status = db.Column(db.Integer, db.ForeignKey('statuses.status_id'), nullable=False, default='0')
     resolution_code = db.Column(db.Integer, db.ForeignKey('resolutions.resolution_id'), nullable=False, default=0)
     created_at = db.Column(db.DateTime(timezone=True), nullable=False,
                            server_default=func.now())

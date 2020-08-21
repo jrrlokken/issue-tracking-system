@@ -15,7 +15,7 @@
 
 .issue-list a {
   text-decoration: none;
-  color: #2a2e64;
+  font-weight: bold;
 }
 
 #footer {

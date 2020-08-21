@@ -21,9 +21,9 @@
 	{% endif %}
 	<br>
 
-	<a class="btn btn-warning mr-2" href="/issues/{{ issue.id }}/edit">EDIT ISSUE</a>
+	<a class="btn btn-sm btn-warning mr-2" href="/issues/{{ issue.id }}/edit">EDIT ISSUE</a>
 	{% if current_user.role == 'admin' %}
-	<button type="submit" class="btn btn-danger" formaction="/issues/{{ issue.id }}/delete" formmethod="POST">DELETE
+	<button type="submit" class="btn btn-sm btn-danger" formaction="/issues/{{ issue.id }}/delete" formmethod="POST">DELETE
 		ISSUE</button>
 	{% endif %}
 </div>

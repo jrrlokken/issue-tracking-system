@@ -12,7 +12,6 @@ from dotenv import load_dotenv
 
 from forms import *
 from models import db, connect_db, User, Issue, Comment, Priority, Resolution, Status, Category
-from helpers import is_admin, is_assignee
 
 load_dotenv()
 
@@ -136,6 +135,54 @@ def list_users():
 
     users = User.query.all()
     return render_template('users/list.html', users=users)
+
+@app.route("/users/<int:user_id>", methods=["GET"])
+@login_required
+def user_detail(user_id):
+    """User detail"""
+
+    user = User.query.get_or_404(user_id)
+    # form = NewCommentForm()
+
+    return render_template("users/detail.html", user=user)
+
+@app.route("/users/<int:user_id>/edit", methods=["GET", "POST"])
+@login_required
+def edit_user(user_id):
+    """Edit user form and handler."""
+
+    user = User.query.get_or_404(user_id)
+    form = EditUserForm(obj=user)
+
+    # categories = Category.query.all()
+    # categories_list = [(c.category_id, c.category_label) for c in categories]
+    # priorities = Priority.query.all()
+    # priorities_list = [(p.priority_id, p.priority_label) for p in priorities]
+    # statuses = Status.query.all()
+    # statuses_list = [(s.status_id, s.status_label) for s in statuses]
+
+    # form.category.choices = categories_list
+    # form.priority.choices = priorities_list
+    # form.status.choices = statuses_list
+
+    # roles_list = 
+    
+    if form.validate_on_submit():
+        email = form.email.data
+        first_name = form.first_name.data
+        last_name = form.last_name.data
+        role = form.role.data
+
+        user.email = email
+        user.first_name = first_name
+        user.last_name = last_name
+        user.role = role
+
+        db.session.commit()
+        flash("User edited", "success")
+        return redirect(f"/users/{user.id}")
+
+    return render_template("users/edit.html", user=user, form=form)
 
 #############################################################
 # Issue routes

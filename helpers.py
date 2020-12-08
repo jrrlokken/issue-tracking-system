@@ -1,15 +1,18 @@
-def is_assignee(current_user):
-    """Is the user an assignee?"""
+# These helper methods don't seem to work the way
+# I expect them to...  commenting them for now.
 
-    if current_user.role == 'assignee':
-        return True
+# def is_assignee(current_user):
+#     """Is the user an assignee?"""
 
-    return False
+#     if current_user.role == 'assignee':
+#         return True
 
-def is_admin(current_user):
-    """Is the user an admin?"""
+#     return False
 
-    if current_user.role == 'admin':
-        return True
+# def is_admin(current_user):
+#     """Is the user an admin?"""
 
-    return False
+#     if current_user.role == 'admin':
+#         return True
+
+#     return False

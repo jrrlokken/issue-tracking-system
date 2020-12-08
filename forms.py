@@ -4,6 +4,12 @@ from wtforms.validators import InputRequired, DataRequired, Optional, NumberRang
 
 # Form classes
 
+class LoginForm(FlaskForm):
+    """Login form."""
+
+    email = StringField("Email", validators=[InputRequired()])
+    password = PasswordField("Password", validators=[InputRequired()])
+
 
 class AddUserForm(FlaskForm):
     """Form for user registration."""
@@ -17,19 +23,14 @@ class AddUserForm(FlaskForm):
     # accept_tos = BooleanField("I accept the Terms of Service", validators=[InputRequired()])
 
 
-class LoginForm(FlaskForm):
-    """Login form."""
-
-    email = StringField("Email", validators=[InputRequired()])
-    password = PasswordField("Password", validators=[InputRequired()])
-
-
 class EditUserForm(FlaskForm):
     """Form to edit user details."""
 
-    first_name=StringField("First Name", validators=[InputRequired()])
-    last_name=StringField("Last Name", validators=[InputRequired()])
-    password=PasswordField("Password", validators=[InputRequired()])
+    email = StringField("Email", validators=[InputRequired()])
+    first_name = StringField("First Name", validators=[InputRequired()])
+    last_name = StringField("Last Name", validators=[InputRequired()])
+    password = PasswordField("Password", validators=[InputRequired()])
+    role = SelectField("Role", validators=[InputRequired()])
 
 
 class NewIssueForm(FlaskForm):
@@ -63,6 +64,6 @@ class EditIssueForm(FlaskForm):
 
 
 class NewCommentForm(FlaskForm):
-    """Form form new comment."""
+    """Form for new comment."""
 
     text = TextAreaField("Comment:", validators=[InputRequired()])

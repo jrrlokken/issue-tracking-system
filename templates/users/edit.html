@@ -2,16 +2,16 @@
 
 {% block main %}
 
-<h1 class="display-6">Edit user {{ user.first_name user.last_name }}</h1>
+<h1 class="display-6">Edit user {{ user.first_name }} {{ user.last_name }}</h1>
 
 <form>
 
   {% include "base/_form.html" %}
 
-  <button type="submit" formmethod="POST" formaction="/issues/{{ issue.id }}/edit" class="btn btn-info">
+  <button type="submit" formmethod="POST" formaction="/users/{{ user.id }}/edit" class="btn btn-info">
     SAVE
   </button>
-  <a class="btn btn-warning" href="/issues/{{ issue.id }}">CANCEL</a>
+  <a class="btn btn-warning" href="/users/{{ user.id }}">CANCEL</a>
 </form>
 
 

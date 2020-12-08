@@ -125,6 +125,17 @@ def logout():
 
     return redirect("/login")
 
+@app.route("/users")
+@login_required
+def list_users():
+    """List users."""
+
+    if current_user.role != 'admin':
+        flash('You must be an admin, sorry.', 'danger')
+        return redirect(url_for('index'))
+
+    users = User.query.all()
+    return render_template('users/list.html', users=users)
 
 #############################################################
 # Issue routes

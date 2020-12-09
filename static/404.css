@@ -1,0 +1,15 @@
+.four-oh-four {
+  background-color: darkslateblue;
+  height: 90vh;
+  max-width: 80vw;
+}
+
+.four-oh-four .fof-header {
+  font-size: 6rem;
+  font-weight: bold;
+}
+
+.four-oh-four .fof-header,
+.four-oh-four .fof-text {
+  color: antiquewhite;
+}

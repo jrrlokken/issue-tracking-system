@@ -51,7 +51,8 @@ def index():
 
     if current_user.is_authenticated:
         if current_user.role == 'admin':
-            issues = Issue.query.all()
+            # issues = Issue.query.filter(Issue.status != 2).all()
+            issues = Issue.query.all();
         elif current_user.role == 'assignee':
             issues = Issue.query.filter(Issue.assignee == current_user.id, Issue.status != 2).all()
         else:
@@ -165,7 +166,7 @@ def edit_user(user_id):
     # form.priority.choices = priorities_list
     # form.status.choices = statuses_list
 
-    # roles_list = 
+    # roles_list = [user, admin, assignee]
     
     if form.validate_on_submit():
         email = form.email.data
@@ -183,6 +184,23 @@ def edit_user(user_id):
         return redirect(f"/users/{user.id}")
 
     return render_template("users/edit.html", user=user, form=form)
+
+@app.route("/users/<int:user_id>/delete", methods=["POST"])
+@login_required
+def delete_user(user_id):
+    """Delete an existing user.  For admins only."""
+
+    if current_user.role != 'admin':
+        flash('You must be an admin, sorry.', 'danger')
+        return redirect("/users")
+    
+    if request.method == "POST":
+        user = User.query.get_or_404(user_id)
+        db.session.delete(user)
+        db.session.commit()
+        flash(f"User {user.first_name} {user.last_name} has been deleted.", "success")
+        return redirect("/users")
+
 
 #############################################################
 # Issue routes
@@ -266,7 +284,7 @@ def edit_issue(issue_id):
         # db.session.flush()
         db.session.commit()
         flash("Issue edited", "success")
-        return redirect(f"/issues/{issue.id}")
+        return redirect("/")
 
     return render_template("issues/edit.html", issue=issue, form=form)
 

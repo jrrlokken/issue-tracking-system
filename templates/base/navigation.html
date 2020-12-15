@@ -6,17 +6,17 @@
   </form>
   <ul class="navbar-nav flex-row">
     
-    <li class="nav-item active">
-      <a class="nav-link" href="/">Issues</a>
-    </li>
-      {% if current_user.role == 'admin' %}
+    
+    {% if current_user.role == 'admin' %}
     <li class="nav-item">
       <a class="nav-link" href="/users">Users</a>
     </li>
-      {% endif %}
+    {% endif %}
       
-      {% if current_user.is_authenticated %}
-    
+    {% if current_user.is_authenticated %}
+    <li class="nav-item active">
+      <a class="nav-link" href="/">Issues</a>
+    </li>
     <li class="nav-item">
       <a class="nav-link" href="/issues/new">New Issue</a>
     </li>

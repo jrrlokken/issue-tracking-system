@@ -287,7 +287,7 @@ def edit_issue(issue_id):
 def delete_issue(issue_id):
     """Delete an existing issue.  For admins only."""
 
-    if current_user.roles.role_label != 'admin':
+    if current_user.role != 2:
         flash("Admin privileges required.", "danger")
         return redirect("/")
     

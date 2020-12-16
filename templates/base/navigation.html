@@ -1,9 +1,9 @@
 <nav class="navbar navbar-dark bg-dark d-flex justify-content-between">
   <a class="navbar-brand" href="/">ITS</a>
-  <form class="form-inline my-2 my-lg-0">
+  <!-- <form class="form-inline my-2 my-lg-0" id="search-form">
     <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
-  </form>
+    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search Issues</button>
+  </form> -->
   <ul class="navbar-nav flex-row">
     
     
@@ -14,7 +14,7 @@
     {% endif %}
       
     {% if current_user.is_authenticated %}
-    <li class="nav-item active">
+    <li class="nav-item">
       <a class="nav-link" href="/">Issues</a>
     </li>
     <li class="nav-item">

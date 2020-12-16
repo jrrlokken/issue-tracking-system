@@ -11,6 +11,9 @@
   <button type="submit" formmethod="POST" formaction="/issues/{{ issue.id }}/edit" class="btn btn-info">
     SAVE
   </button>
+  {% if current_user.role == 2 %}
+	<button type="submit" class="btn btn-danger" formaction="/issues/{{ issue.id }}/delete" formmethod="POST">DELETE ISSUE</button>
+	{% endif %}
   <a class="btn btn-warning" href="/issues/{{ issue.id }}">CANCEL</a>
 </form>
 

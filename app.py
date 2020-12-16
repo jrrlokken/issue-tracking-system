@@ -49,11 +49,10 @@ def load_user(user_id):
 @app.route("/")
 def index():
     """Index view."""
-    if current_user.is_anonymous:
-        return render_template('base/index.html')
 
     if current_user.is_authenticated:
-        if current_user.roles.role_label == 'admin':
+        # if current_user.roles.role_label == 'admin':
+        if current_user.role == 2:
             # issues = Issue.query.filter(Issue.status != 2).all()
             issues = Issue.query.order_by(Issue.id).all();
         elif current_user.roles.role_label == 'assignee':

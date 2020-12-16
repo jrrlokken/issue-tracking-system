@@ -33,7 +33,6 @@ class User(UserMixin, db.Model):
     is_active = db.Column(db.Boolean, nullable=False, default=True)
 
     roles = db.relationship('Role', lazy='select', backref=db.backref('user', lazy='joined'))
-    # comments = db.relationship('Comment', lazy='select', backref=db.backref('user', lazy='joined'))
 
     @classmethod
     def register(cls, email, first_name, last_name, password):
@@ -80,15 +79,15 @@ class Issue(db.Model):
     title = db.Column(db.Text, nullable=False)
     text = db.Column(db.Text, nullable=False)
     category = db.Column(db.Integer, db.ForeignKey('categories.category_id'), nullable=False, default=0)
-    reporter = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    reporter = db.Column(db.Integer, db.ForeignKey('users.id'))
     assignee = db.Column(db.Integer, db.ForeignKey('users.id'))
     priority = db.Column(db.Integer, db.ForeignKey('priorities.priority_id'), nullable=False, default=1)
     status = db.Column(db.Integer, db.ForeignKey('statuses.status_id'), nullable=False, default=0)
-    # resolution_code = db.Column(db.Integer, db.ForeignKey('resolutions.resolution_id'), nullable=False, default=0)
     created_at = db.Column(db.DateTime(timezone=True), nullable=False,
                            server_default=func.now())
     updated_at = db.Column(db.DateTime(timezone=True), onupdate=func.now())
 
+    # users = db.relationship('User', lazy='select', foreign_keys=[reporter], backref=db.backref('issue', lazy='joined'), cascade='all, delete, delete-orphan')
     comments = db.relationship('Comment', lazy='select', backref=db.backref('issue', lazy='joined'), cascade='all, delete, delete-orphan')
 
     priorities = db.relationship('Priority', lazy='select', backref=db.backref('issue', lazy='joined'))

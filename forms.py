@@ -29,8 +29,8 @@ class EditUserForm(FlaskForm):
     email = StringField("Email", validators=[InputRequired()])
     first_name = StringField("First Name", validators=[InputRequired()])
     last_name = StringField("Last Name", validators=[InputRequired()])
-    password = PasswordField("Password", validators=[InputRequired()])
-    role = SelectField("Role", validators=[InputRequired()])
+    password = PasswordField("Password")
+    role = SelectField("Role", validators=[InputRequired()], coerce=int)
 
 
 class NewIssueForm(FlaskForm):
@@ -52,9 +52,7 @@ class EditIssueForm(FlaskForm):
 
     title = StringField("Title", validators=[InputRequired()])
     text = TextAreaField("Issue Description", validators=[InputRequired()])
-    category = SelectField("Category",
-                            validators=[InputRequired()],
-                            coerce=int)
+    category = StringField("Category")
     priority = SelectField("Priority",
                             validators=[InputRequired()],
                             coerce=int)

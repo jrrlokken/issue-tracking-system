@@ -9,7 +9,7 @@
 	<br>
 
 	<a class="btn btn-sm btn-warning mr-2" href="/users/{{ user.id }}/edit">EDIT USER</a>
-	{% if current_user.roles.role_label == 'admin' %}
+	{% if current_user.role == 2 %}
 	<button type="submit" class="btn btn-sm btn-danger" formaction="/users/{{ user.id }}/delete" formmethod="POST">DELETE USER</button>
 	{% endif %}
 </div>

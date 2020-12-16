@@ -46,15 +46,16 @@ def load_user(user_id):
 # Index routes
 
 
-@app.route("/")
+@app.route("/", methods=['GET', 'POST'])
 def index():
     """Index view."""
 
     if current_user.is_authenticated:
-        # if current_user.roles.role_label == 'admin':
+        search = SearchForm()
+
         if current_user.role == 2:
             # issues = Issue.query.filter(Issue.status != 2).all()
-            issues = Issue.query.order_by(Issue.id).all();
+            issues = Issue.query.order_by(Issue.id).all()
         elif current_user.roles.role_label == 'assignee':
             issues = Issue.query.order_by(Issue.id).filter(Issue.assignee == current_user.id, Issue.status != 2).all()
         else:
@@ -63,6 +64,20 @@ def index():
         return render_template('base/index.html', issues=issues)
 
     return render_template('base/index.html')
+
+@app.route("/results")
+@login_required
+def search_results(search):
+    results = []
+    search_string = search.data['search']
+
+    if search.data['search'] == '':
+        results = Issue.query.order_by(Issue.id).all()
+
+    if not results:
+        flash('No results found', 'danger')
+    else:
+        return render_template('base/index.html', issues=results)
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -295,7 +310,7 @@ def delete_issue(issue_id):
         issue = Issue.query.get_or_404(issue_id)
         db.session.delete(issue)
         db.session.commit()
-        flash(f"Issue #{issue_id} has been deleted.", "success")
+        flash(f"Issue '{issue.title}' has been deleted.", "success")
         return redirect("/")
 
 #############################################################
@@ -336,6 +351,19 @@ def delete_comment(comment_id):
     
     flash("Admin privileges required.", "danger")
     return redirect("/")
+
+
+# @app.route('/search', methods=['POST'])
+# @login_required
+# def search():
+#     """Search for issues."""
+    
+#     if request.method == 'POST':
+#         search = form.search.data
+#         # do the db search
+#         issues = Issue.query.order_by(Issue.created_at).filter(Issue.title like {search} or Issue.description like {search});
+#         return render_template("base/index.html", issues=issues)
+
 
 @app.errorhandler(404)
 def page_not_found(e):

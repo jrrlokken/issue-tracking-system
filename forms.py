@@ -65,3 +65,9 @@ class NewCommentForm(FlaskForm):
     """Form for new comment."""
 
     text = TextAreaField("Comment:", validators=[InputRequired()])
+
+
+class SearchForm(FlaskForm):
+    """Search form."""
+
+    search = StringField('')

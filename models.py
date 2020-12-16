@@ -1,7 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import func
 from flask_bcrypt import Bcrypt
-from flask_login import UserMixin, LoginManager
+from flask_login import AnonymousUserMixin, UserMixin, LoginManager
 
 
 db = SQLAlchemy()
@@ -14,6 +14,10 @@ def connect_db(app):
 
 
 # Models
+# class MyAnonymousUser(AnonymousUserMixin):
+#     @property
+#     def role(self):
+#         return 'guest'
 
 class User(UserMixin, db.Model):
     """Issue Tracker user."""
@@ -25,9 +29,10 @@ class User(UserMixin, db.Model):
     first_name = db.Column(db.String(30), nullable=False)
     last_name = db.Column(db.String(30), nullable=False)
     password = db.Column(db.Text, nullable=False)
-    role = db.Column(db.String, nullable=False, default='user')
+    role = db.Column(db.Integer, db.ForeignKey('roles.role_id'), nullable=False, default=0) 
     is_active = db.Column(db.Boolean, nullable=False, default=True)
 
+    roles = db.relationship('Role', lazy='select', backref=db.backref('user', lazy='joined'))
     # comments = db.relationship('Comment', lazy='select', backref=db.backref('user', lazy='joined'))
 
     @classmethod
@@ -77,9 +82,9 @@ class Issue(db.Model):
     category = db.Column(db.Integer, db.ForeignKey('categories.category_id'), nullable=False, default=0)
     reporter = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     assignee = db.Column(db.Integer, db.ForeignKey('users.id'))
-    priority = db.Column(db.Integer, db.ForeignKey('priorities.priority_id'), nullable=False, default='1')
-    status = db.Column(db.Integer, db.ForeignKey('statuses.status_id'), nullable=False, default='0')
-    resolution_code = db.Column(db.Integer, db.ForeignKey('resolutions.resolution_id'), nullable=False, default=0)
+    priority = db.Column(db.Integer, db.ForeignKey('priorities.priority_id'), nullable=False, default=1)
+    status = db.Column(db.Integer, db.ForeignKey('statuses.status_id'), nullable=False, default=0)
+    # resolution_code = db.Column(db.Integer, db.ForeignKey('resolutions.resolution_id'), nullable=False, default=0)
     created_at = db.Column(db.DateTime(timezone=True), nullable=False,
                            server_default=func.now())
     updated_at = db.Column(db.DateTime(timezone=True), onupdate=func.now())
@@ -110,13 +115,21 @@ class Priority(db.Model):
     priority_label = db.Column(db.String, nullable=False)
 
 
-class Resolution(db.Model):
-    """Resolutions model."""
+# class Resolution(db.Model):
+#     """Resolutions model."""
 
-    __tablename__ = "resolutions"
+#     __tablename__ = "resolutions"
 
-    resolution_id = db.Column(db.Integer, primary_key=True)
-    resolution_label = db.Column(db.String, nullable=False)
+#     resolution_id = db.Column(db.Integer, primary_key=True)
+#     resolution_label = db.Column(db.String, nullable=False)
+
+class Role(db.Model):
+    """Roles model."""
+
+    __tablename__ = "roles"
+
+    role_id = db.Column(db.Integer, primary_key=True)
+    role_label = db.Column(db.String, nullable=False)
 
 
 class Status(db.Model):

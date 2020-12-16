@@ -11,7 +11,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from dotenv import load_dotenv
 
 from forms import *
-from models import db, connect_db, User, Issue, Comment, Priority, Resolution, Status, Category
+from models import db, connect_db, User, Issue, Comment, Priority, Status, Category, Role
 
 load_dotenv()
 
@@ -31,6 +31,7 @@ db.create_all()
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login"
+# login_manager.anonymous_user = MyAnonymousUser
 
 
 @login_manager.user_loader
@@ -48,15 +49,17 @@ def load_user(user_id):
 @app.route("/")
 def index():
     """Index view."""
+    if current_user.is_anonymous:
+        return render_template('base/index.html')
 
     if current_user.is_authenticated:
-        if current_user.role == 'admin':
+        if current_user.roles.role_label == 'admin':
             # issues = Issue.query.filter(Issue.status != 2).all()
-            issues = Issue.query.all();
-        elif current_user.role == 'assignee':
-            issues = Issue.query.filter(Issue.assignee == current_user.id, Issue.status != 2).all()
+            issues = Issue.query.order_by(Issue.id).all();
+        elif current_user.roles.role_label == 'assignee':
+            issues = Issue.query.order_by(Issue.id).filter(Issue.assignee == current_user.id, Issue.status != 2).all()
         else:
-            issues = Issue.query.filter(Issue.reporter == current_user.id, Issue.status != 2).all()
+            issues = Issue.query.order_by(Issue.id).filter(Issue.reporter == current_user.id, Issue.status != 2).all()
 
         return render_template('base/index.html', issues=issues)
 
@@ -130,7 +133,7 @@ def logout():
 def list_users():
     """List users."""
 
-    if current_user.role != 'admin':
+    if current_user.roles.role_label != 'admin':
         flash('You must be an admin, sorry.', 'danger')
         return redirect(url_for('index'))
 
@@ -153,7 +156,12 @@ def edit_user(user_id):
 
     user = User.query.get_or_404(user_id)
     form = EditUserForm(obj=user)
+
+    roles = Role.query.all()
+    roles_list = [(r.role_id, r.role_label) for r in roles]
     
+    form.role.choices = roles_list
+
     if form.validate_on_submit():
         email = form.email.data
         first_name = form.first_name.data
@@ -176,7 +184,7 @@ def edit_user(user_id):
 def delete_user(user_id):
     """Delete an existing user.  For admins only."""
 
-    if current_user.role != 'admin':
+    if current_user.roles.role_label != 'admin':
         flash('You must be an admin, sorry.', 'danger')
         return redirect("/users")
     
@@ -242,14 +250,14 @@ def edit_issue(issue_id):
     issue = Issue.query.get_or_404(issue_id)
     form = EditIssueForm(obj=issue)
 
-    categories = Category.query.all()
-    categories_list = [(c.category_id, c.category_label) for c in categories]
+    # categories = Category.query.all()
+    # categories_list = [(c.category_id, c.category_label) for c in categories]
     priorities = Priority.query.all()
     priorities_list = [(p.priority_id, p.priority_label) for p in priorities]
     statuses = Status.query.all()
     statuses_list = [(s.status_id, s.status_label) for s in statuses]
 
-    form.category.choices = categories_list
+    # form.category.choices = categories_list
     form.priority.choices = priorities_list
     form.status.choices = statuses_list
     
@@ -280,7 +288,7 @@ def edit_issue(issue_id):
 def delete_issue(issue_id):
     """Delete an existing issue.  For admins only."""
 
-    if not is_admin:
+    if current_user.roles.role_label != 'admin':
         flash("Admin privileges required.", "danger")
         return redirect("/")
     
@@ -319,7 +327,7 @@ def new_comment(issue_id):
 def delete_comment(comment_id):
     """Delete an existing comment.  For admins only."""
 
-    if is_admin(current_user):
+    if current_user.roles.role_label != 'admin':
         if request.method == "POST":
             comment = Comment.query.get_or_404(comment_id)
             db.session.delete(comment)

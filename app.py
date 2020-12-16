@@ -143,7 +143,6 @@ def user_detail(user_id):
     """User detail"""
 
     user = User.query.get_or_404(user_id)
-    # form = NewCommentForm()
 
     return render_template("users/detail.html", user=user)
 
@@ -154,19 +153,6 @@ def edit_user(user_id):
 
     user = User.query.get_or_404(user_id)
     form = EditUserForm(obj=user)
-
-    # categories = Category.query.all()
-    # categories_list = [(c.category_id, c.category_label) for c in categories]
-    # priorities = Priority.query.all()
-    # priorities_list = [(p.priority_id, p.priority_label) for p in priorities]
-    # statuses = Status.query.all()
-    # statuses_list = [(s.status_id, s.status_label) for s in statuses]
-
-    # form.category.choices = categories_list
-    # form.priority.choices = priorities_list
-    # form.status.choices = statuses_list
-
-    # roles_list = [user, admin, assignee]
     
     if form.validate_on_submit():
         email = form.email.data
@@ -348,51 +334,6 @@ def delete_comment(comment_id):
 def page_not_found(e):
     return render_template('base/404.html'), 404
 
-
-
-
-## API routes
-# /api/v1/resources/users/all
-# /api/v1/resources/users/<user_id>
-# /api/v1/resources/issues/all
-# /api/v1/resources/issues/<issue_id>
-# /api/v1/resources/comments ???
-
-
-
-
-# def _url(path):
-#     return 'localhost:5000/api/v1' + path
-
-# def get_users()
-#     return requests.get(_url('/users'))
-
-# def issue_detail(issue_id):
-#     return requests.get(_url('/users/{:d}/'.format(task_id)))
-
-# def get_issues()
-#     return requests.get(_url('/comments'))
-
-# def get_issues()
-#     return requests.get(_url('/issues'))
-
-# def issue_detail(issue_id):
-#     return requests.get(_url('/issues/{:d}/'.format(task_id)))
-
-# def add_issue(title, text="", reporter=current_user.id)
-#     return requests.post(_url('/issues/'), json={
-#         'title': title,
-#         'text': text,
-#         'reporter': reporter,
-#     })
-
-# def update_issue(issue_id, title, text, reporter):
-#     url = _url('/issues/{:d}/'.format(task_id))
-#     return requests.put(url, json={
-#         'title': title,
-#         'text': text,
-#         'reporter': reporter,
-#     })
 
 
 

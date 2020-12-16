@@ -31,7 +31,7 @@
         <td>{{ issue.statuses.status_label }}</td>
 
         <td>{{ issue.priorities.priority_label }}</td>
-        <td>{{ issue.created_at.replace(microsecond=0) }}</td>
+        <td>{{ issue.created_at.replace(microsecond=0, tzinfo=None) }}</td>
       </tr>
 
       {% endfor %}

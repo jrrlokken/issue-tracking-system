@@ -7,7 +7,7 @@
   <ul class="navbar-nav flex-row">
     
     
-    {% if current_user.role == 'admin' %}
+    {% if current_user.roles.role_label == 'admin' %}
     <li class="nav-item">
       <a class="nav-link" href="/users">Users</a>
     </li>

@@ -89,7 +89,7 @@ class Issue(db.Model):
                            server_default=func.now())
     updated_at = db.Column(db.DateTime(timezone=True), onupdate=func.now())
 
-    comments = db.relationship('Comment', lazy='select', backref=db.backref('issue', lazy='joined'))
+    comments = db.relationship('Comment', lazy='select', backref=db.backref('issue', lazy='joined'), cascade='all, delete, delete-orphan')
 
     priorities = db.relationship('Priority', lazy='select', backref=db.backref('issue', lazy='joined'))
     statuses = db.relationship('Status', lazy='select', backref=db.backref('issue', lazy='joined'))

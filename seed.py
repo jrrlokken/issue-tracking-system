@@ -1,5 +1,5 @@
 from app import app
-from models import db, connect_db, User, Issue, Comment, Priority, Resolution, Status, Category
+from models import db, connect_db, User, Issue, Comment, Priority, Status, Category, Role
 
 db.drop_all()
 db.create_all()
@@ -45,20 +45,20 @@ s3 = Status(
 
 # Resolution
 
-r1 = Resolution(
-    resolution_id=0,
-    resolution_label="Open"
-)
+# r1 = Resolution(
+#     resolution_id=0,
+#     resolution_label="Open"
+# )
 
-r2 = Resolution(
-    resolution_id=1,
-    resolution_label="Resolved"
-)
+# r2 = Resolution(
+#     resolution_id=1,
+#     resolution_label="Resolved"
+# )
 
-r3 = Resolution(
-    resolution_id=2,
-    resolution_label="Closed"
-)
+# r3 = Resolution(
+#     resolution_id=2,
+#     resolution_label="Closed"
+# )
 
 # Category
 
@@ -77,23 +77,28 @@ c3 = Category(
     category_label="Product Request"
 )
 
-# ro1 = Role(
-#     role_id=0,
-#     role_label="user"
-# )
+ro1 = Role(
+    role_id=0,
+    role_label="user"
+)
 
-# ro2 = Role(
-#     role_id=1,
-#     role_label="assignee"
-# )
+ro2 = Role(
+    role_id=1,
+    role_label="assignee"
+)
 
-# ro3 = Role(
-#     role_id=2,
-#     role_label="admin"
-# )
+ro3 = Role(
+    role_id=2,
+    role_label="admin"
+)
+
+ro4 = Role(
+    role_id=3,
+    role_label="guest"
+)
 
 
-db.session.add_all([p1,p2,p3,p4,r1,r2,r3,s1,s2,s3,c1,c2,c3])
+db.session.add_all([p1,p2,p3,p4,s1,s2,s3,c1,c2,c3,ro1,ro2,ro3,ro4])
 db.session.commit()
 
 # Sample users.
@@ -126,8 +131,8 @@ u4 = User.register(
     password="password"
 )
 
-u1.role = 'admin'
-u4.role = 'assignee'
+u1.role = 2
+u4.role = 1
 
 db.session.commit()
 

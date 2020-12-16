@@ -86,7 +86,8 @@ class Issue(db.Model):
 
     comments = db.relationship('Comment', lazy='select', backref=db.backref('issue', lazy='joined'))
 
-
+    priorities = db.relationship('Priority', lazy='select', backref=db.backref('issue', lazy='joined'))
+    statuses = db.relationship('Status', lazy='select', backref=db.backref('issue', lazy='joined'))
 
 class Comment(db.Model):
     """Comment model."""

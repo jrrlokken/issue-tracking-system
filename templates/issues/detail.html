@@ -22,7 +22,7 @@
 	<br>
 
 	<a class="btn btn-sm btn-warning mr-2" href="/issues/{{ issue.id }}/edit">EDIT ISSUE</a>
-	{% if current_user.roles.role_label == 'admin' %}
+	{% if current_user.role == 2 %}
 	<button type="submit" class="btn btn-sm btn-danger" formaction="/issues/{{ issue.id }}/delete" formmethod="POST">DELETE
 		ISSUE</button>
 	{% endif %}

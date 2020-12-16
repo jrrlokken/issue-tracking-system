@@ -28,9 +28,9 @@
         <th scope="row">{{ issue.id }}</th>
         <td><a href="/issues/{{ issue.id }}">{{ issue.title }}</a></td>
         <td>{{ issue.text }}</td>
-        <td>{{ issue.status }}</td>
+        <td>{{ issue.statuses.status_label }}</td>
 
-        <td>{{ issue.priority }}</td>
+        <td>{{ issue.priorities.priority_label }}</td>
         <td>{{ issue.created_at.replace(microsecond=0) }}</td>
       </tr>
 

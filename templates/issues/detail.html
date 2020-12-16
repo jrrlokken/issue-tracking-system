@@ -12,7 +12,7 @@
 	{% if issue.comments %}
 	{% for comment in issue.comments %}
 	<div class="comment-wrapper my-2">
-		<p class="font-weight-light">{{ comment.comment_date.replace(microsecond=0) }}</p>
+		<p class="font-weight-light">{{ comment.comment_date.replace(microsecond=0, tzinfo=None) }}</p>
 		<p>{{ comment.comment_text }}</p>
 		<br>
 	</div>
@@ -22,7 +22,7 @@
 	<br>
 
 	<a class="btn btn-sm btn-warning mr-2" href="/issues/{{ issue.id }}/edit">EDIT ISSUE</a>
-	{% if current_user.role == 'admin' %}
+	{% if current_user.roles.role_label == 'admin' %}
 	<button type="submit" class="btn btn-sm btn-danger" formaction="/issues/{{ issue.id }}/delete" formmethod="POST">DELETE
 		ISSUE</button>
 	{% endif %}

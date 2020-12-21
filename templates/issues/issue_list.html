@@ -10,6 +10,7 @@
         <th scope="col">Status</th>
         <th scope="col">Priority</th>
         <th scope="col">Created</th>
+        <th scope="col">Updated</th>
       </tr>
     </thead>
     <tbody>
@@ -32,6 +33,7 @@
 
         <td>{{ issue.priorities.priority_label }}</td>
         <td>{{ issue.created_at.replace(microsecond=0, tzinfo=None) }}</td>
+        <td>{{ issue.updated_at.replace(microsecond=0, tzinfo=None) if issue.updated_at != None else 'None'}}</td>
       </tr>
 
       {% endfor %}

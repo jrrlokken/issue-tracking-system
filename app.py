@@ -50,8 +50,14 @@ def load_user(user_id):
 def index():
     """Index view."""
 
+    # form = SearchForm()
+
     if current_user.is_authenticated:
-        search = SearchForm()
+        
+        
+        # if request.method == 'POST':
+        #     search = form.search.data
+        #     return search_results(search)
 
         if current_user.role == 2:
             # issues = Issue.query.filter(Issue.status != 2).all()
@@ -61,23 +67,23 @@ def index():
         else:
             issues = Issue.query.order_by(Issue.id).filter(Issue.reporter == current_user.id, Issue.status != 2).all()
 
+        # return render_template('base/index.html', issues=issues, form=search)
         return render_template('base/index.html', issues=issues)
-
     return render_template('base/index.html')
 
-@app.route("/results")
-@login_required
-def search_results(search):
-    results = []
-    search_string = search.data['search']
+# @app.route("/results", methods=['POST'])
+# @login_required
+# def search_results(search):
+#     results = []
+#     search_string = search.data['search']
 
-    if search.data['search'] == '':
-        results = Issue.query.order_by(Issue.id).all()
+#     if search.data['search'] == '':
+#         results = Issue.query.order_by(Issue.id).all()
 
-    if not results:
-        flash('No results found', 'danger')
-    else:
-        return render_template('base/index.html', issues=results)
+#     if not results:
+#         flash('No results found', 'danger')
+#     else:
+#         return render_template('base/index.html', issues=results)
 
 
 @app.route("/register", methods=["GET", "POST"])

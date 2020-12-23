@@ -50,25 +50,17 @@ def load_user(user_id):
 def index():
     """Index view."""
 
-    # form = SearchForm()
-
     if current_user.is_authenticated:
-        
-        
-        # if request.method == 'POST':
-        #     search = form.search.data
-        #     return search_results(search)
 
         if current_user.role == 2:
-            # issues = Issue.query.filter(Issue.status != 2).all()
             issues = Issue.query.order_by(Issue.id).all()
         elif current_user.roles.role_label == 'assignee':
             issues = Issue.query.order_by(Issue.id).filter(Issue.assignee == current_user.id, Issue.status != 2).all()
         else:
             issues = Issue.query.order_by(Issue.id).filter(Issue.reporter == current_user.id, Issue.status != 2).all()
 
-        # return render_template('base/index.html', issues=issues, form=search)
         return render_template('base/index.html', issues=issues)
+
     return render_template('base/index.html')
 
 
@@ -253,7 +245,7 @@ def issue_detail(issue_id):
 @login_required
 def edit_issue(issue_id):
     """Edit issue form and handler."""
-
+        
     issue = Issue.query.get_or_404(issue_id)
     form = EditIssueForm(obj=issue)
 
@@ -346,16 +338,14 @@ def delete_comment(comment_id):
     return redirect("/")
 
 
-# @app.route('/search', methods=['POST'])
-# @login_required
-# def search():
-#     """Search for issues."""
-    
-#     if request.method == 'POST':
-#         search = form.search.data
-#         # do the db search
-#         issues = Issue.query.order_by(Issue.created_at).filter(Issue.title like {search} or Issue.description like {search});
-#         return render_template("base/index.html", issues=issues)
+@app.route('/search')
+@login_required
+def search():
+    """Search for issues."""
+    search = request.args.get('search')
+    issues = Issue.query.order_by((Issue.created_at.desc())).filter((Issue.title.ilike("%" + search + "%") | Issue.text.ilike("%" + search + "%"))).all()
+        
+    return render_template("base/index.html", issues=issues)
 
 
 @app.errorhandler(404)

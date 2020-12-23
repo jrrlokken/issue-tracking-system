@@ -71,19 +71,6 @@ def index():
         return render_template('base/index.html', issues=issues)
     return render_template('base/index.html')
 
-# @app.route("/results", methods=['POST'])
-# @login_required
-# def search_results(search):
-#     results = []
-#     search_string = search.data['search']
-
-#     if search.data['search'] == '':
-#         results = Issue.query.order_by(Issue.id).all()
-
-#     if not results:
-#         flash('No results found', 'danger')
-#     else:
-#         return render_template('base/index.html', issues=results)
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -270,14 +257,14 @@ def edit_issue(issue_id):
     issue = Issue.query.get_or_404(issue_id)
     form = EditIssueForm(obj=issue)
 
-    # categories = Category.query.all()
-    # categories_list = [(c.category_id, c.category_label) for c in categories]
+    categories = Category.query.all()
+    categories_list = [(c.category_id, c.category_label) for c in categories]
     priorities = Priority.query.all()
     priorities_list = [(p.priority_id, p.priority_label) for p in priorities]
     statuses = Status.query.all()
     statuses_list = [(s.status_id, s.status_label) for s in statuses]
 
-    # form.category.choices = categories_list
+    form.category.choices = categories_list
     form.priority.choices = priorities_list
     form.status.choices = statuses_list
     
@@ -297,7 +284,7 @@ def edit_issue(issue_id):
         # db.session.merge(issue)
         # db.session.flush()
         db.session.commit()
-        flash("Issue edited", "success")
+        flash("Issue updated", "success")
         return redirect("/")
 
     return render_template("issues/edit.html", issue=issue, form=form)

@@ -7,6 +7,7 @@
         <th scope="col">Issue ID</th>
         <th scope="col">Title</th>
         <th scope="col">Description</th>
+        <th scope="col">Category</th>
         <th scope="col">Status</th>
         <th scope="col">Priority</th>
         <th scope="col">Created</th>
@@ -29,6 +30,7 @@
         <th scope="row">{{ issue.id }}</th>
         <td><a href="/issues/{{ issue.id }}">{{ issue.title }}</a></td>
         <td>{{ issue.text }}</td>
+        <td>{{ issue.categories.category_label }}</td>
         <td>{{ issue.statuses.status_label }}</td>
 
         <td>{{ issue.priorities.priority_label }}</td>

@@ -115,14 +115,6 @@ class Priority(db.Model):
     priority_label = db.Column(db.String, nullable=False)
 
 
-# class Resolution(db.Model):
-#     """Resolutions model."""
-
-#     __tablename__ = "resolutions"
-
-#     resolution_id = db.Column(db.Integer, primary_key=True)
-#     resolution_label = db.Column(db.String, nullable=False)
-
 class Role(db.Model):
     """Roles model."""
 

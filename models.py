@@ -79,8 +79,8 @@ class Issue(db.Model):
     title = db.Column(db.Text, nullable=False)
     text = db.Column(db.Text, nullable=False)
     category = db.Column(db.Integer, db.ForeignKey('categories.category_id'), nullable=False, default=0)
-    reporter = db.Column(db.Integer, db.ForeignKey('users.id'))
-    assignee = db.Column(db.Integer, db.ForeignKey('users.id'))
+    reporter = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='SET NULL'))
+    assignee = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='SET NULL'))
     priority = db.Column(db.Integer, db.ForeignKey('priorities.priority_id'), nullable=False, default=1)
     status = db.Column(db.Integer, db.ForeignKey('statuses.status_id'), nullable=False, default=0)
     created_at = db.Column(db.DateTime(timezone=True), nullable=False,

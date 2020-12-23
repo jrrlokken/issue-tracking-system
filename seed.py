@@ -43,23 +43,6 @@ s3 = Status(
     status_label="Resolved"
 )
 
-# Resolution
-
-# r1 = Resolution(
-#     resolution_id=0,
-#     resolution_label="Open"
-# )
-
-# r2 = Resolution(
-#     resolution_id=1,
-#     resolution_label="Resolved"
-# )
-
-# r3 = Resolution(
-#     resolution_id=2,
-#     resolution_label="Closed"
-# )
-
 # Category
 
 c1 = Category(
@@ -92,13 +75,8 @@ ro3 = Role(
     role_label="admin"
 )
 
-ro4 = Role(
-    role_id=3,
-    role_label="guest"
-)
 
-
-db.session.add_all([p1,p2,p3,p4,s1,s2,s3,c1,c2,c3,ro1,ro2,ro3,ro4])
+db.session.add_all([p1,p2,p3,p4,s1,s2,s3,c1,c2,c3,ro1,ro2,ro3])
 db.session.commit()
 
 # Sample users.
@@ -119,51 +97,46 @@ u2 = User.register(
 
 u3 = User.register(
     email="user3@example.com",
-    first_name="Regular",
-    last_name="User",
-    password="password"
-)
-
-u4 = User.register(
-    email="user4@example.com",
     first_name="Assignee",
     last_name="User",
     password="password"
 )
 
 u1.role = 2
-u4.role = 1
+u3.role = 1
 
 db.session.commit()
 
 # Sample issues
 
 i1 = Issue(
-    title="Sample Issue 1",
-    text="Longer description text describing Issue 1.  This is a text field, so can contain much text.",
+    title="Printer on fire!",
+    text="Huge flames are shooting out of paper tray 1!!! Please bring fire extinguisher ASAP!!!",
     reporter=2,
-    assignee=4
+    assignee=3
 )
 
 i2 = Issue(
-    title="Sample Issue 2",
-    text="Longer description text describing Issue 2.  So much text can fit here, you wouldn't believe it.",
+    title="Computer not responding",
+    text="My PC is showing the loading spinner and will not respond to keyboard or mouse input.  It has been doing this for 6 weeks.",
     reporter=2,
-    assignee=4
+    assignee=3
 )
 
 i3 = Issue(
-    title="Sample Issue 3",
-    text="Longer description text describing Issue 3.  Look at all of this text!  Holy Cow!",
+    title="Please bring in nacho flavored Beanfields chips",
+    text="We're not saying you're going to get addicted to our slamming NACHO, but we're also not going to say you won't. Nacho-lly we're biased since it is our best seller. NACHO just has unmatched taste that makes being cheesy, well, cool and vegan. The kinda vegan you want at your barbecue so you can say, 'yeah NACHO came with me. We're good like that.' Nacho average tortilla chip.",
+    category=2,
     reporter=3,
-    assignee=4
+    assignee=3
 )
 
 i4 = Issue(
-    title="Sample Issue 4",
-    text="Longer description text describing Issue 4.  Look at all of this text!  Holy Cow!",
+    title="Clerk was rude and dismissive",
+    text="She told me to wear a mask, and I don't wanna!",
+    category=1,
     reporter=3,
-    assignee=4
+    assignee=3
 )
 
 db.session.add_all([i1,i2,i3,i4])

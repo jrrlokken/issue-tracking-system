@@ -21,12 +21,9 @@
 	{% endif %}
 	<br>
 
+	{% if current_user.role in [1,2] %}
 	<a class="btn btn-sm btn-warning mr-2" href="/issues/{{ issue.id }}/edit">EDIT ISSUE</a>
-
-	<!-- {% if current_user.role == 2 %}
-	<button type="submit" class="btn btn-sm btn-danger" formaction="/issues/{{ issue.id }}/delete" formmethod="POST">DELETE ISSUE</button>
-	{% endif %} -->
-
+	{% endif %}
 </div>
 <div class="mt-5">
 	{% include "comments/new.html" %}

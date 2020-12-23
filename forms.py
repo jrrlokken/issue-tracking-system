@@ -20,7 +20,6 @@ class AddUserForm(FlaskForm):
     last_name = StringField("Last Name", validators=[InputRequired(), Length(min=2, max=20)])
     password = PasswordField("Password", validators=[InputRequired(), Length(min=8, max=32), EqualTo('confirm', message='Passwords must match')])
     confirm = PasswordField("Confirm Password", validators=[InputRequired()])
-    # accept_tos = BooleanField("I accept the Terms of Service", validators=[InputRequired()])
 
 
 class EditUserForm(FlaskForm):
@@ -29,7 +28,8 @@ class EditUserForm(FlaskForm):
     email = StringField("Email", validators=[InputRequired()])
     first_name = StringField("First Name", validators=[InputRequired()])
     last_name = StringField("Last Name", validators=[InputRequired()])
-    password = PasswordField("Password")
+    password = PasswordField("Password", validators=[Length(min=8, max=32), EqualTo('confirm', message='Passwords must match')])
+    confirm = PasswordField("Confirm Password")
     role = SelectField("Role", validators=[InputRequired()], coerce=int)
 
 
@@ -46,13 +46,14 @@ class NewIssueForm(FlaskForm):
                             coerce=int)
 
 
-
 class EditIssueForm(FlaskForm):
-    """Form to enter new issue."""
+    """Form to edit an existing issue."""
 
     title = StringField("Title", validators=[InputRequired()])
     text = TextAreaField("Issue Description", validators=[InputRequired()])
-    category = StringField("Category")
+    category = SelectField("Category", 
+                            validators=[InputRequired()],
+                            coerce=int)
     priority = SelectField("Priority",
                             validators=[InputRequired()],
                             coerce=int)
@@ -67,7 +68,7 @@ class NewCommentForm(FlaskForm):
     text = TextAreaField("Comment:", validators=[InputRequired()])
 
 
-class SearchForm(FlaskForm):
-    """Search form."""
+# class SearchForm(FlaskForm):
+#     """Search form."""
 
-    search = StringField('')
+#     search = StringField('')

@@ -1,11 +1,18 @@
+html, body {
+  height: 100%;
+}
 
-.main-container {
-  margin-top: 20px;
+body {
+  display: flex;
+  flex-direction: column;
 }
 
 .wrapper {
-  min-height: 100vh;
-  margin-bottom: -50px;
+  flex: 1 0 auto;
+}
+
+.main-container {
+  margin-top: 20px;
 }
 
 .issue-list {
@@ -18,8 +25,8 @@
   font-weight: bold;
 }
 
-#footer {
-  height: 50px;
+.footer {
+  flex-shrink: 0;
 }
 
 li.nav-item {
@@ -32,4 +39,8 @@ li.nav-item {
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
+}
+
+.index-illustration {
+  max-height: 400px;
 }

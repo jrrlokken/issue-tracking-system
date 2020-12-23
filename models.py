@@ -90,6 +90,7 @@ class Issue(db.Model):
     # users = db.relationship('User', lazy='select', foreign_keys=[reporter], backref=db.backref('issue', lazy='joined'), cascade='all, delete, delete-orphan')
     comments = db.relationship('Comment', lazy='select', backref=db.backref('issue', lazy='joined'), cascade='all, delete, delete-orphan')
 
+    categories = db.relationship('Category', lazy='select', backref=db.backref('issue', lazy='joined'))
     priorities = db.relationship('Priority', lazy='select', backref=db.backref('issue', lazy='joined'))
     statuses = db.relationship('Status', lazy='select', backref=db.backref('issue', lazy='joined'))
 

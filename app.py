@@ -32,7 +32,6 @@ db.create_all()
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login"
-# login_manager.anonymous_user = MyAnonymousUser
 
 
 @login_manager.user_loader
@@ -40,8 +39,6 @@ def load_user(user_id):
     """Login manager load user method."""
 
     return User.query.get(int(user_id))
-    # return User.query.get(int(id))
-
 
 
 #############################################################
@@ -57,7 +54,7 @@ def index():
         if current_user.role == 2:
             issues = Issue.query.order_by(Issue.id).all()
         elif current_user.roles.role_label == 'assignee':
-            issues = Issue.query.order_by(Issue.id).filter(Issue.assignee == current_user.id, Issue.status != 2).all()
+            issues = Issue.query.order_by(Issue.id).filter((Issue.assignee == current_user.id) | (Issue.status != 2)).all()
         else:
             issues = Issue.query.order_by(Issue.id).filter(Issue.reporter == current_user.id, Issue.status != 2).all()
 
@@ -129,6 +126,10 @@ def logout():
         flash("Logged out", "success")
 
     return redirect("/")
+
+
+#############################################################
+# User routes
 
 @app.route("/users")
 @login_required
@@ -340,6 +341,9 @@ def delete_comment(comment_id):
     flash("Admin privileges required.", "danger")
     return redirect("/")
 
+
+#############################################################
+# Miscellaneous routes
 
 @app.route('/search')
 @login_required

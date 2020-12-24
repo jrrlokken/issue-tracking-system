@@ -28,8 +28,8 @@ class EditUserForm(FlaskForm):
     email = StringField("Email", validators=[InputRequired()])
     first_name = StringField("First Name", validators=[InputRequired()])
     last_name = StringField("Last Name", validators=[InputRequired()])
-    password = PasswordField("Password", validators=[Length(min=8, max=32), EqualTo('confirm', message='Passwords must match')])
-    confirm = PasswordField("Confirm Password")
+    # password = PasswordField("Password", validators=[Length(min=8, max=32), EqualTo('confirm', message='Passwords must match')])
+    # confirm = PasswordField("Confirm Password")
     role = SelectField("Role", validators=[InputRequired()], coerce=int)
 
 

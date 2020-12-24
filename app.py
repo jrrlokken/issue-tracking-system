@@ -2,8 +2,8 @@ import os
 import requests
 
 from flask import Flask, request, render_template, redirect, flash, jsonify, url_for
-from flask import session, make_response
-
+from flask import session
+from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, UserMixin
 from flask_login import login_user, logout_user, current_user, login_required
 from flask_debugtoolbar import DebugToolbarExtension
@@ -14,6 +14,7 @@ from forms import *
 from models import db, connect_db, User, Issue, Comment, Priority, Status, Category, Role
 
 load_dotenv()
+bcrypt = Bcrypt()
 
 app = Flask(__name__)
 
@@ -39,6 +40,7 @@ def load_user(user_id):
     """Login manager load user method."""
 
     return User.query.get(int(user_id))
+    # return User.query.get(int(id))
 
 
 
@@ -107,9 +109,10 @@ def login():
 
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
-        if user is None:
+        if user is None or not bcrypt.check_password_hash(user.password, form.password.data):
             flash('Invalid email or password', 'warning')
             return redirect(url_for('login'))
+
         login_user(user)
         flash("Welcome!", "success")
         return redirect(url_for('index'))
@@ -125,7 +128,7 @@ def logout():
         logout_user()
         flash("Logged out", "success")
 
-    return redirect("/login")
+    return redirect("/")
 
 @app.route("/users")
 @login_required

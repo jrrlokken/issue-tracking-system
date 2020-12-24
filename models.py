@@ -54,8 +54,7 @@ class User(UserMixin, db.Model):
     @classmethod
     def authenticate(cls, email, password):
         """Validate that user exists & password is correct.
-
-        Return user if valid; else return False.
+           Return user if valid; else return False.
         """
 
         user = User.query.filter_by(email=email).one()

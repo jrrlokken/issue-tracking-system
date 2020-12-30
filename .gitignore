@@ -5,3 +5,4 @@ __pycache__
 .directory
 *.env
 seed.py
+config.py

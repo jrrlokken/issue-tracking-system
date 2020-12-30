@@ -7,7 +7,7 @@ from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, UserMixin
 from flask_login import login_user, logout_user, current_user, login_required
 from flask_debugtoolbar import DebugToolbarExtension
-
+from flask_mail import Mail
 from dotenv import load_dotenv
 
 from forms import *
@@ -26,6 +26,7 @@ app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'keepitsecretkeepitsafe!
 
 debug = DebugToolbarExtension(app)
 connect_db(app)
+mail = Mail(app)
 
 db.create_all()
 

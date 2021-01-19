@@ -20,10 +20,13 @@ Assignee user: user3@example.com / password3
 
 To run the app locally, you'll need a PostgreSQL database, issue_tracker.
 Clone the repo,
-Create a python virtual env
+Create a python virtual env,
+
+```
 $ pip install -r requirements.txt
 $ python3 < seed.py
 $ flask run
+```
 
 Enjoy!
 

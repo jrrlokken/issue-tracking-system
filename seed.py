@@ -1,6 +1,7 @@
 from app import app
 from models import db, connect_db, User, Issue, Comment, Priority, Status, Category, Role
 
+# Drop db tables and create them anew
 db.drop_all()
 db.create_all()
 

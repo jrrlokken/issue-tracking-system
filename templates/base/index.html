@@ -12,7 +12,7 @@
 
 {% block main %}
 
-{% if current_user.is_authenticated %}
+{% if (current_user.is_authenticated) and (issues) %}
 
 <form class="form-inline" action="/search" method="GET">
   <div class="mb-4 input-group">

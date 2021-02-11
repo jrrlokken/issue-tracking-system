@@ -1,7 +1,7 @@
 import os
 import requests
 
-from flask import Flask, request, render_template, redirect, flash, jsonify, url_for, session
+from flask import Flask, request, render_template, redirect, flash, jsonify, url_for
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, UserMixin, login_user, logout_user, current_user, login_required
 from flask_debugtoolbar import DebugToolbarExtension

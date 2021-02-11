@@ -143,6 +143,9 @@ class DBUserTests(unittest.TestCase):
     self.assertIn(b'New Issue', response.data)
     self.assertEqual(200, response.status_code)
   
+  def test_user_registration_duplicate_email(self):
+    response = self.register('testuser@example.com', 'Test', 'User', 'password', 'password')
+    self.assertIn(b'testuser@example.com has already been registered', response.data)
 
   def test_registration_messages(self):
     """Test registration validation messages."""
@@ -165,3 +168,7 @@ class DBUserTests(unittest.TestCase):
     response = self.logout()
     self.assertNotIn(b'Test Issue', response.data)
 
+
+
+if __name__ == "__main__":
+  unittest.main()

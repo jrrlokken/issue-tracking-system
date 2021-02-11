@@ -7,7 +7,7 @@ from wtforms.validators import InputRequired, DataRequired, Optional, NumberRang
 class LoginForm(FlaskForm):
     """Login form."""
 
-    email = StringField("Email", validators=[InputRequired()])
+    email = StringField("Email", validators=[InputRequired(), Email()])
     password = PasswordField("Password", validators=[InputRequired()])
 
 
@@ -25,7 +25,7 @@ class AddUserForm(FlaskForm):
 class EditUserForm(FlaskForm):
     """Form to edit user details."""
 
-    email = StringField("Email", validators=[InputRequired()])
+    email = StringField("Email", validators=[InputRequired(), Email()])
     first_name = StringField("First Name", validators=[InputRequired()])
     last_name = StringField("Last Name", validators=[InputRequired()])
     # password = PasswordField("Password", validators=[Length(min=8, max=32), EqualTo('confirm', message='Passwords must match')])
@@ -66,9 +66,3 @@ class NewCommentForm(FlaskForm):
     """Form for new comment."""
 
     text = TextAreaField("Comment:", validators=[InputRequired()])
-
-
-# class SearchForm(FlaskForm):
-#     """Search form."""
-
-#     search = StringField('')

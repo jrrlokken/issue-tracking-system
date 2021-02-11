@@ -1,11 +1,9 @@
 import os
 import requests
 
-from flask import Flask, request, render_template, redirect, flash, jsonify, url_for
-from flask import session
+from flask import Flask, request, render_template, redirect, flash, jsonify, url_for, session
 from flask_bcrypt import Bcrypt
-from flask_login import LoginManager, UserMixin
-from flask_login import login_user, logout_user, current_user, login_required
+from flask_login import LoginManager, UserMixin, login_user, logout_user, current_user, login_required
 from flask_debugtoolbar import DebugToolbarExtension
 
 from dotenv import load_dotenv
@@ -24,7 +22,7 @@ app.config['SQLALCHEMY_ECHO'] = False
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'keepitsecretkeepitsafe!')
 
-debug = DebugToolbarExtension(app)
+#debug = DebugToolbarExtension(app)
 connect_db(app)
 
 db.create_all()

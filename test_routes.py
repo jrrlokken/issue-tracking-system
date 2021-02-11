@@ -1,12 +1,13 @@
-from unittest import TestCase
+import unittest
 from app import app
 
 
-class RenderTests(TestCase):
+class RenderTests(unittest.TestCase):
   """Test each route for proper render."""
   def setUp(self):
+    app.config['TESTING'] = True
+    app.config['DEBUG'] = False
     self.client = app.test_client()
-    app.config['DEBUG_TB_HOSTS'] = ['dont-show-debug-toolbar']
 
   def test_homepage(self):
     """Test root route."""
@@ -44,4 +45,5 @@ class RenderTests(TestCase):
       self.assertIn(b'Nothing lives here...', response.data)
       self.assertEqual(404, response.status_code)
 
-
+if __name__ == "__main__":
+  unittest.main()

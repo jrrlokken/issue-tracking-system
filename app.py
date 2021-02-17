@@ -329,16 +329,15 @@ def delete_comment(comment_id):
     """Delete an existing comment.  For admins only."""
 
     if current_user.roles.role_label != 'admin':
-        if request.method == "POST":
-            comment = Comment.query.get_or_404(comment_id)
-            db.session.delete(comment)
-            db.session.commit()
-            flash(f"Comment #{comment_id} has been deleted.", "success")
-            return redirect("/")
+        flash("Admin privileges required.", "danger")
+        return redirect("/")
     
-    flash("Admin privileges required.", "danger")
-    return redirect("/")
-
+    if request.method == "POST":
+        comment = Comment.query.get_or_404(comment_id)
+        db.session.delete(comment)
+        db.session.commit()
+        flash(f"Comment #{comment_id} has been deleted.", "success")
+        return redirect("/")
 
 #############################################################
 # Miscellaneous routes

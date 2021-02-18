@@ -134,7 +134,7 @@ def logout():
 def list_users():
     """List users."""
 
-    if current_user.roles.role_label != 'admin':
+    if current_user.role != 2:
         flash('You must be an admin, sorry.', 'danger')
         return redirect(url_for('index'))
 
@@ -154,7 +154,7 @@ def user_detail(user_id):
 @login_required
 def edit_user(user_id):
     """Edit user form and handler."""
-
+    
     user = User.query.get_or_404(user_id)
     form = EditUserForm(obj=user)
 
@@ -185,7 +185,7 @@ def edit_user(user_id):
 def delete_user(user_id):
     """Delete an existing user.  For admins only."""
 
-    if current_user.roles.role_label != 'admin':
+    if current_user.role != 2:
         flash('You must be an admin, sorry.', 'danger')
         return redirect("/users")
     

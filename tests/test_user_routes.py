@@ -68,3 +68,13 @@ class UserRouteTests(unittest.TestCase):
   def tearDown(self):
 		db.session.remove()
 		db.drop_all()
+  
+  # Helper method
+  def login(self, email, password):
+		return self.client.post(
+      '/login',
+      data=dict(email=email, password=password),
+      follow_redirects = True
+		)
+
+  

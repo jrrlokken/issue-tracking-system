@@ -144,7 +144,11 @@ def list_users():
 @app.route("/users/<int:user_id>", methods=["GET"])
 @login_required
 def user_detail(user_id):
-    """User detail"""
+    """User detail."""
+    if current_user.role != 2:
+       flash('You must be an admin, sorry.', 'danger')
+       return redirect(url_for('index'))
+
 
     user = User.query.get_or_404(user_id)
 
@@ -154,7 +158,10 @@ def user_detail(user_id):
 @login_required
 def edit_user(user_id):
     """Edit user form and handler."""
-    
+    if current_user.role != 2:
+        flash('You must be an admin, sorry.', 'danger')
+        return redirect(url_for('index'))
+
     user = User.query.get_or_404(user_id)
     form = EditUserForm(obj=user)
 

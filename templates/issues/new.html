@@ -5,11 +5,11 @@
 <h1 class="display-6">New Issue</h1>
 <p class="lead">Submit a new issue</p>
 
-<form>
+<form id="new-issue-form">
 
   {% include "base/_form.html" %}
 
-  <button type="submit" formmethod="POST" formaction="/issues/new" class="btn btn-info rounded">SUBMIT ISSUE</button>
+  <button id="new-issue-submit" type="submit" formmethod="POST" formaction="/issues/new" class="btn btn-info rounded">SUBMIT ISSUE</button>
   <a class="btn btn-warning ml-2" href="/">CANCEL</a>
 </form>
 

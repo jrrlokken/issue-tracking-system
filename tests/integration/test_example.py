@@ -13,7 +13,7 @@ driver = webdriver.Chrome()
 # print(element.text)
 # driver.close()
 
-driver.get('http://localhost:5000/login')
+driver.get('https://its.joshualokken.tech/login')
 email = driver.find_element(By.ID, 'email')
 password = driver.find_element(By.ID, 'password')
 form = driver.find_element(By.ID, 'login-form')

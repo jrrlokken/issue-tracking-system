@@ -1,10 +1,10 @@
-Issue Tracking System (ITS) 
+Issue Tracking System (ITS)
 
-https://flask-its.herokuapp.com
+https://its.joshualokken.tech
 
 ITS is intended to be used to track technical issues, customer complaints and product requests for a retail operation.
 
-The issue list is an HTML table sortable by all columns and searchable by issue title or description.  Table rows are color coded to indicate issue priority.  
+The issue list is an HTML table sortable by all columns and searchable by issue title or description. Table rows are color coded to indicate issue priority.
 
 Users of the application have the ability to register with an email address, login, create new issues, add comments to those issues and logout.
 
@@ -14,8 +14,8 @@ ITS is written in Python, JavaScript, HTML and CSS. It is a Flask application, u
 
 Demo credentials:
 
-Admin user:  user1@example.com / password1
-Normal user:  user2@example.com / password2
+Admin user: user1@example.com / password1
+Normal user: user2@example.com / password2
 Assignee user: user3@example.com / password3
 
 To run the app locally, you'll need a PostgreSQL database, issue_tracker.
@@ -29,6 +29,3 @@ $ flask run
 ```
 
 Enjoy!
-
-
-

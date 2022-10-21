@@ -23,10 +23,10 @@ isort==5.6.4
 itsdangerous==1.1.0
 jedi==0.17.2
 Jinja2==2.11.3
-lazy-object-proxy
+lazy-object-proxy==1.4.3
 MarkupSafe==1.1.1
 mccabe==0.6.1
-parso==0.8.1
+parso==0.7.1
 pexpect==4.8.0
 pickleshare==0.7.5
 prompt-toolkit==3.0.8

@@ -12,9 +12,9 @@ from forms import *
 from models import db, connect_db, User, Issue, Comment, Priority, Status, Category, Role
 
 load_dotenv()
-bcrypt = Bcrypt()
 
 app = Flask(__name__)
+bcrypt = Bcrypt(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'postgres:///issue_tracker')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
